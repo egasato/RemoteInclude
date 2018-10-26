@@ -13,7 +13,7 @@ include(CMakeParseArguments)
 if (COMMAND RemoteInclude OR COMMAND _RemoteInclude)
     message(FATAL_ERROR "Macro name collision. The name \"RemoteInclude\" or \"_RemoteInclude\" already exists.")
     return()
-endif (COMMAND RemoteInclude OR COMMAND _RemoteInclude)
+endif ()
 
 # Create the function that downloads the file
 function(_RemoteInclude include_path inclusion_name)
@@ -46,22 +46,22 @@ function(_RemoteInclude include_path inclusion_name)
     elseif (DEFINED REMOTE_INCLUDE_TIMEOUT AND REMOTE_INCLUDE_TIMEOUT LESS_EQUAL 0 AND NOT REMOTE_INCLUDE_TIMEOUT GREATER 0)
         message(FATAL_ERROR "The parameter \"TIMEOUT\" cannot be less than or equal to 0.")
         return()
-    endif (NOT DEFINED REMOTE_INCLUDE_URL OR REMOTE_INCLUDE_URL STREQUAL "")
+    endif ()
 
     # Transform the destination to be an absolute path
     set(REMOTE_INCLUDE_DESTINATION_COPY "${REMOTE_INCLUDE_DESTINATION}")
     if (NOT REMOTE_INCLUDE_DESTINATION MATCHES "^([A-Z]+:)?/")
         set(REMOTE_INCLUDE_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/downloads/${REMOTE_INCLUDE_DESTINATION}")
         get_filename_component(REMOTE_INCLUDE_DESTINATION "${REMOTE_INCLUDE_DESTINATION}" ABSOLUTE)
-    endif (NOT REMOTE_INCLUDE_DESTINATION MATCHES "^([A-Z]+:)?/")
+    endif ()
 
     # Set the default parameters
     if (NOT DEFINED REMOTE_INCLUDE_INACTIVITY_TIMEOUT)
         set(REMOTE_INCLUDE_INACTIVITY_TIMEOUT 0)
-    endif (NOT DEFINED REMOTE_INCLUDE_INACTIVITY_TIMEOUT)
+    endif ()
     if (NOT DEFINED REMOTE_INCLUDE_TIMEOUT)
         set(REMOTE_INCLUDE_TIMEOUT 2)
-    endif (NOT DEFINED REMOTE_INCLUDE_TIMEOUT)
+    endif ()
 
     # Build the parameters list
     list(APPEND file_args DOWNLOAD "${REMOTE_INCLUDE_URL}")
@@ -76,7 +76,7 @@ function(_RemoteInclude include_path inclusion_name)
     endif (DEFINED REMOTE_INCLUDE_EXPECTED_HASH)
     if (DEFINED REMOTE_INCLUDE_EXPECTED_MD5)
         list(APPEND file_args EXPECTED_MD5 "${REMOTE_INCLUDE_EXPECTED_MD5}")
-    endif (DEFINED REMOTE_INCLUDE_EXPECTED_MD5)
+    endif ()
     list(APPEND file_args TLS_VERIFY ON)
 
     # If the directory does not exist create it
@@ -85,25 +85,25 @@ function(_RemoteInclude include_path inclusion_name)
         if (NOT IS_DIRECTORY "${REMOTE_INCLUDE_DESTINATION_DIR}")
             message(FATAL_ERROR "The path \"${REMOTE_INCLUDE_DESTINATION_DIR}\" exists but is not a directory, thus the file cannot be saved inside it.")
             return()
-        endif (NOT IS_DIRECTORY "${REMOTE_INCLUDE_DESTINATION_DIR}")
+        endif ()
     else (EXISTS "${REMOTE_INCLUDE_DESTINATION_DIR}")
         message(STATUS "[RemoteInclude(${inclusion_name})]: Creating directory ${REMOTE_INCLUDE_DESTINATION_DIR}")
         file(MAKE_DIRECTORY "${REMOTE_INCLUDE_DESTINATION_DIR}")
-    endif (EXISTS "${REMOTE_INCLUDE_DESTINATION_DIR}")
+    endif ()
 
     # If the destination already exists and is not a file, we won't be able to write into it
     if (EXISTS "${REMOTE_INCLUDE_DESTINATION}")
         if (IS_DIRECTORY "${REMOTE_INCLUDE_DESTINATION}")
             message(FATAL_ERROR "The path \"${REMOTE_INCLUDE_DESTINATION}\" already exists and is a directory.")
             return()
-        endif (IS_DIRECTORY "${REMOTE_INCLUDE_DESTINATION}")
+        endif ()
 
         # Make sure that the user wants to overwrite the file
         # because CMake auto-reload feature can destroy files accidentally
         if (NOT REMOTE_INCLUDE_OVERWRITE)
             message(STATUS "[RemoteInclude(${inclusion_name})]: To prevent accidental overwrites you must explicitly indicate that you want to do so. Skipping download.")
             return()
-        endif (NOT REMOTE_INCLUDE_OVERWRITE)
+        endif ()
 
         # If the file is newer than the cache, then skip the download
         if (DEFINED REMOTE_INCLUDE_CACHE AND NOT REMOTE_INCLUDE_CACHE EQUALS 0)
@@ -113,10 +113,10 @@ function(_RemoteInclude include_path inclusion_name)
                 if (REMOTE_INCLUDE_CACHE LESS 0 OR NOT ago GREATER REMOTE_INCLUDE_CACHE)
                     message(STATUS "[RemoteInclude(${inclusion_name})]: Skipping download because of the cache configuration")
                     return()
-                endif (NOT ago GREATER REMOTE_INCLUDE_CACHE)
-            endif (DEFINED REMOTE_INCLUDE_UNIX_TIME_${inclusion_name})
-        endif (DEFINED REMOTE_INCLUDE_CACHE)
-    endif (EXISTS "${REMOTE_INCLUDE_DESTINATION}")
+                endif ()
+            endif ()
+        endif ()
+    endif ()
 
     # Download the file
     message(STATUS "[RemoteInclude(${inclusion_name})]: Downloading ${REMOTE_INCLUDE_URL} into ${REMOTE_INCLUDE_DESTINATION}")
