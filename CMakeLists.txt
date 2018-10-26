@@ -33,15 +33,15 @@ include(CMakePackageConfigHelpers)
 # Write the ConfigVersion file
 # @formatter:off
 write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+        ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
         VERSION       ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 # @formatter:on
 
 # Created the configuration file to use the project without installing
-set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
 # @formatter:off
+set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
 configure_package_config_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
         ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
@@ -56,7 +56,7 @@ set(RemoteInclude_CMAKE_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake")
 # @formatter:off
 configure_package_config_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
         INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
         PATH_VARS           RemoteInclude_CMAKE_DIR
         NO_CHECK_REQUIRED_COMPONENTS_MACRO
