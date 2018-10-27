@@ -88,8 +88,8 @@ if (WIN32)
     )
     install(
             FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
-            DESTINATION /
             RENAME      ${PROJECT_NAME}Config.cmake
+            DESTINATION /
     )
     # @formatter:on
 else ()
