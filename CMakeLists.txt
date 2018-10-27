@@ -39,25 +39,33 @@ write_basic_package_version_file(
 )
 # @formatter:on
 
-# Created the configuration file to use the project without installing
+# Create the configuration file to use the project without installing
 # @formatter:off
 set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
 configure_package_config_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
         ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
+        INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
         PATH_VARS           RemoteInclude_CMAKE_DIR
         NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 # @formatter:on
 
-# Created the configuration file to install
-set(RemoteInclude_CMAKE_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake")
+## Created the configuration file to install
+
+if (WIN32)
+    set(RemoteInclude_CMAKE_DIR "cmake")
+    set(install_destination /)
+else ()
+    set(RemoteInclude_CMAKE_DIR "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake")
+    set(install_destination ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME})
+endif ()
+
 # @formatter:off
 configure_package_config_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
+        INSTALL_DESTINATION ${install_destination}
         PATH_VARS           RemoteInclude_CMAKE_DIR
         NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
@@ -68,21 +76,39 @@ configure_package_config_file(
 #######################################################################
 
 # Install the necessary files
-# @formatter:off
-install(
-        FILES       ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}.cmake
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
-)
-install(
-        FILES       ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PACKAGE_NAME}
-)
-install(
-        FILES       ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigExport.cmake
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
-        RENAME      ${PACKAGE_NAME}Config.cmake
-)
-# @formatter:on
+if (WIN32)
+    # @formatter:off
+    install(
+            FILES       ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}.cmake
+            DESTINATION cmake
+    )
+    install(
+            FILES       ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+            DESTINATION /
+    )
+    install(
+            FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
+            DESTINATION /
+            RENAME      ${PROJECT_NAME}Config.cmake
+    )
+    # @formatter:on
+else ()
+    # @formatter:off
+    install(
+            FILES       ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}.cmake
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
+    )
+    install(
+            FILES       ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PACKAGE_NAME}
+    )
+    install(
+            FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME}
+            RENAME      ${PACKAGE_NAME}Config.cmake
+    )
+    # @formatter:on
+endif ()
 
 # Export the package to the user's CMake registry
 export(PACKAGE RemoteInclude)
