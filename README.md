@@ -22,6 +22,10 @@
     <a title="GitHub Issues" href="https://github.com/egasato/RemoteInclude/issues">
         <img alt="issues | N open" src="https://img.shields.io/github/issues/egasato/RemoteInclude.svg" />
     </a>
+    <!-- [![HitCount](http://hits.dwyl.io/egasato/RemoteInclude.svg)](http://hits.dwyl.io/egasato/RemoteInclude) -->
+    <a title="HitCount" href="http://hits.dwyl.io/egasato/RemoteInclude">
+        <img alt="HitCount | N hits" src="http://hits.dwyl.io/egasato/RemoteInclude.svg" />
+    </a>
     <!-- ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg) -->
     <img alt="contributions | welcome" src="https://img.shields.io/badge/contributions-welcome-orange.svg" />
     <!-- [![License](https://img.shields.io/github/license/egasato/RemoteInclude.svg)](https://opensource.org/licenses/MPL-2.0) -->
