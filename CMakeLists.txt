@@ -33,7 +33,7 @@ include(CMakePackageConfigHelpers)
 # Write the ConfigVersion file
 # @formatter:off
 write_basic_package_version_file(
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         VERSION       ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
@@ -44,7 +44,7 @@ write_basic_package_version_file(
 set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
 configure_package_config_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
         INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
         PATH_VARS           RemoteInclude_CMAKE_DIR
         NO_CHECK_REQUIRED_COMPONENTS_MACRO
@@ -74,8 +74,8 @@ configure_package_config_file(
 # If this project is being included by another project
 # copy the CMake configuration files to the global build dir
 if ("${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    configure_file(${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake COPYONLY)
-    configure_file(${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake COPYONLY)
+    configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake COPYONLY)
+    configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake COPYONLY)
 endif ()
 
 #######################################################################
