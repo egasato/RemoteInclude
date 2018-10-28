@@ -33,7 +33,7 @@ install:
   - cmake --version && which cmake
   - cpack --version && which cpack
   - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
-  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix /usr
+  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix /usr/local/cmake-3.13.0-rc2
   - cmake --version && which cmake
   - cpack --version && which cpack
 
