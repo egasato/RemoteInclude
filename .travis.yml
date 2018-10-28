@@ -31,11 +31,12 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y cmake lrzip
   - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
-  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix /usr/local
+  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.13.0-rc2
+  - export PATH="/usr/local/cmake-3.13.0-rc2:$PATH"
   - cmake --version && which cmake
-  - /usr/local/bin/cmake --version
+  - /usr/local/cmake-3.13.0-rc2/bin/cmake --version
   - cpack --version && which cpack
-  - /usr/local/bin/cpack --version
+  - /usr/local/cmake-3.13.0-rc2/bin/cpack --version
 
 # Configure the project
 before_script:
