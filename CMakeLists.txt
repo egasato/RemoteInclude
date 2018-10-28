@@ -130,7 +130,7 @@ export(PACKAGE RemoteInclude)
 #######################################################################
 
 # @formatter:off
-set(CPACK_GENERATOR                   "TBZ2;TGZ;TXZ;TZ;ZIP;STGZ")
+set(CPACK_GENERATOR                   "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Simple CMake script to download and auto-include remote CMake scripts")
@@ -144,7 +144,7 @@ set(CPACK_PACKAGE_ICON                 ${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.pn
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
-set(CPACK_SOURCE_GENERATOR         "TBZ2;TGZ;TXZ;TZ;ZIP;STGZ")
+set(CPACK_SOURCE_GENERATOR         "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
 list(APPEND CPACK_SOURCE_IGNORE_FILES build test media .git* .idea README.md)
 # @formatter:on
@@ -154,8 +154,8 @@ if (WIN32)
 
     # Enable the NSIS installer and configure it
     # @formatter:off
-    list(APPEND CPACK_SOURCE_GENERATOR  7Z)
-    list(APPEND CPACK_GENERATOR         7Z NSIS NSIS64)
+    list(APPEND CPACK_SOURCE_GENERATOR  7Z TXZ)
+    list(APPEND CPACK_GENERATOR         7Z TXZ NSIS NSIS64)
     set(CPACK_NSIS_MODIFY_PATH          OFF)
     set(CPACK_NSIS_DISPLAY_NAME        "${PROJECT_NAME} ${PROJECT_VERSION}")
     set(CPACK_NSIS_HELP_LINK           "${PROJECT_HOMEPAGE_URL}")
