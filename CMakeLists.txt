@@ -73,7 +73,7 @@ configure_package_config_file(
 
 # If this project is being included by another project
 # copy the CMake configuration files to the global build dir
-if ("${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+if (NOT "${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake COPYONLY)
     configure_package_config_file(
             ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
