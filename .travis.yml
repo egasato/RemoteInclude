@@ -8,7 +8,7 @@ compiler:
 
 # Use sudo-less Ubuntu Trusty 14.04.5 LTS
 dist: trusty
-sudo: false
+sudo: required
 
 # Configure, compile and test the project using the four different build types
 env:
@@ -26,4 +26,4 @@ before_script:
 # Build and install the project
 script:
   - cmake --build .
-  - cmake --build . --target install
+  - sudo cmake --build . --target install
