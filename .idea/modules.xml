@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CMake-RemoteInclude.iml" filepath="$PROJECT_DIR$/.idea/CMake-RemoteInclude.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RemoteInclude.iml" filepath="$PROJECT_DIR$/.idea/RemoteInclude.iml" />
     </modules>
   </component>
 </project>
