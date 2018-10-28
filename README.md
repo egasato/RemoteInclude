@@ -129,4 +129,64 @@ cmake --build . --target install
 ```
 
 ## Usage
-TODO
+In order to use this project, a few additions have to be done to your `CMakeLists.txt`.
+If you prefer, you can put the following contents in a custom `.cmake` file and include it in your `CMakeLists.txt` so it does not clutter your original file.
+```cmake
+# Search the package
+find_package(RemoteInclude QUIET NO_MODULE)
+
+# Log the result
+if (RemoteInclude_FOUND)
+    message(STATUS "Project \"RemoteInclude\" was found!")
+else ()
+    message(STATUS "Project \"RemoteInclude\" was NOT found!")
+endif ()
+
+# If it was NOT found, download the project
+if (NOT RemoteInclude_FOUND)
+
+    # Include support to download the Git project at configure time
+    include(FetchContent)
+
+    # Specify how to retrieve the contents
+    # @formatter:off
+    FetchContent_Declare(
+            RemoteInclude
+            GIT_REPOSITORY https://github.com/egasato/RemoteInclude.git
+            GIT_TAG        develop
+    )
+    # @formatter:on
+
+    # Get the properties of the project
+    FetchContent_GetProperties(RemoteInclude)
+
+    # Download the contents if not done before
+    if (NOT RemoteInclude_POPULATED)
+        message(STATUS "Downloading \"RemoteInclude\" contents...")
+        FetchContent_Populate(RemoteInclude)
+        # @formatter:off
+        set(RemoteInclude_POPULATED  "${remoteinclude_POPULATED}")
+        set(RemoteInclude_SOURCE_DIR "${remoteinclude_SOURCE_DIR}")
+        set(RemoteInclude_BINARY_DIR "${remoteinclude_BINARY_DIR}")
+        # @formatter:on
+    endif ()
+
+    # Add the project
+    add_subdirectory(${RemoteInclude_SOURCE_DIR} ${RemoteInclude_BINARY_DIR})
+
+    # Search the package again
+    set(RemoteInclude_DIR "${RemoteInclude_BINARY_DIR}")
+    find_package(RemoteInclude QUIET NO_MODULE REQUIRED)
+
+    # Log the result
+    if (RemoteInclude_FOUND)
+        message(STATUS "Project \"RemoteInclude\" was found!")
+    else ()
+        message(FATAL_ERROR "Project \"RemoteInclude\" was NOT found!")
+        return()
+    endif ()
+
+endif ()
+```
+
+You can view the whole `CMakeLists.txt` file at [RemoteInclude-Test](https://github.com/egasato/RemoteInclude-Test).
