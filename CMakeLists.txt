@@ -15,7 +15,7 @@ project(
         RemoteInclude
         VERSION       1.0.0.0
         DESCRIPTION  "Adds support for the inclusion of remote CMake scripts"
-        HOMEPAGE_URL  https://github.com/egasato/CMake-RemoteInclude
+        HOMEPAGE_URL  https://github.com/egasato/RemoteInclude
         LANGUAGES     NONE
 )
 # @formatter:on
