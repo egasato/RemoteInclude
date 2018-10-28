@@ -130,7 +130,7 @@ export(PACKAGE RemoteInclude)
 #######################################################################
 
 # @formatter:off
-set(CPACK_GENERATOR                   "STGZ;TBZ2;TGZ;TXZ;TZ;ZIP;7Z")
+set(CPACK_GENERATOR                   "7Z;TBZ2;TGZ;TXZ;TZ;ZIP;STGZ")
 set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Simple CMake script to download and auto-include remote CMake scripts")
@@ -144,7 +144,7 @@ set(CPACK_PACKAGE_ICON                 ${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.pn
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
-set(CPACK_SOURCE_GENERATOR         "STGZ;TBZ2;TGZ;TXZ;TZ;ZIP;7Z")
+set(CPACK_SOURCE_GENERATOR         "7Z;TBZ2;TGZ;TXZ;TZ;ZIP;STGZ")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
 list(APPEND CPACK_SOURCE_IGNORE_FILES build test media .git* .idea README.md)
 # @formatter:on
