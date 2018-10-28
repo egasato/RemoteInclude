@@ -1,0 +1,29 @@
+# If our project had something to compile, it would be C probably
+language: c
+
+# Test all the compilers
+compiler:
+  - gcc
+  - clang
+
+# Use sudo-less Ubuntu Trusty 14.04.5 LTS
+dist: trusty
+sudo: false
+
+# Configure, compile and test the project using the four different build types
+env:
+  - CMAKE_BUILD_TYPE=Debug
+  - CMAKE_BUILD_TYPE=Release
+  - CMAKE_BUILD_TYPE=RelWithDebInfo
+  - CMAKE_BUILD_TYPE=MinSizeRel
+
+# Configure the project
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+# Build and install the project
+script:
+  - cmake --build .
+  - cmake --build . --target install
