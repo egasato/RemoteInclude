@@ -13,4 +13,6 @@
 set_and_check(RemoteInclude_CMAKE_DIR "@PACKAGE_RemoteInclude_CMAKE_DIR@")
 
 # Include the library
-include("${RemoteInclude_CMAKE_DIR}/${PROJECT_NAME}.cmake")
+get_filename_component(RemoteInclude_PROJECT_NAME "${CMAKE_CURRENT_LIST_FILE}" NAME)
+string(REGEX REPLACE "Config.cmake$" "" RemoteInclude_PROJECT_NAME "${RemoteInclude_PROJECT_NAME}")
+include("${RemoteInclude_CMAKE_DIR}/${RemoteInclude_PROJECT_NAME}.cmake")
