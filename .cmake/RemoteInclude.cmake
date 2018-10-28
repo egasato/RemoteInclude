@@ -109,7 +109,7 @@ function(_RemoteInclude include_path inclusion_name)
         endif ()
 
         # If the file is newer than the cache, then skip the download
-        if (DEFINED REMOTE_INCLUDE_CACHE AND NOT REMOTE_INCLUDE_CACHE EQUALS 0)
+        if (DEFINED REMOTE_INCLUDE_CACHE AND NOT REMOTE_INCLUDE_CACHE EQUAL 0)
             if (DEFINED REMOTE_INCLUDE_UNIX_TIME_${inclusion_name})
                 string(TIMESTAMP unix_time "%s" UTC)
                 math(EXPR ago "${unix_time} - ${REMOTE_INCLUDE_UNIX_TIME_${inclusion_name}}")
