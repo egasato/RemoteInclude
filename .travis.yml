@@ -10,17 +10,17 @@ compiler:
 dist: trusty
 sudo: required
 
+# Configure, compile and test the project using the four different build types
+env:
+- CMAKE_BUILD_TYPE=Debug
+- CMAKE_BUILD_TYPE=Release
+- CMAKE_BUILD_TYPE=RelWithDebInfo
+- CMAKE_BUILD_TYPE=MinSizeRel
+
 # Install CMake
 install:
   - sudo apt-get update
   - sudo apt-get install -y cmake
-
-# Configure, compile and test the project using the four different build types
-env:
-  - CMAKE_BUILD_TYPE=Debug
-  - CMAKE_BUILD_TYPE=Release
-  - CMAKE_BUILD_TYPE=RelWithDebInfo
-  - CMAKE_BUILD_TYPE=MinSizeRel
 
 # Configure the project
 before_script:
@@ -32,3 +32,8 @@ before_script:
 script:
   - cmake --build .
   - sudo cmake --build . --target install
+
+# Create the packages before deploying
+before_deploy:
+  - cpack --config CPackConfig.cmake
+  - cpack --config CPackSourceConfig.cmake
