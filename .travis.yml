@@ -32,8 +32,8 @@ before_script:
 script:
   - cmake --build .
   - sudo cmake --build . --target install
-  - cpack --config CPackConfig.cmake
-  - cpack --config CPackSourceConfig.cmake
+  - sudo cpack --config CPackConfig.cmake
+  - sudo cpack --config CPackSourceConfig.cmake
 
 # Create the packages before deploying
 before_deploy:
