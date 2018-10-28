@@ -17,7 +17,12 @@ env:
 - CMAKE_BUILD_TYPE=RelWithDebInfo
 - CMAKE_BUILD_TYPE=MinSizeRel
 
-# Install CMake
+# Install some utils
+before_install:
+- sudo apt-get update
+- sudo apt-get install -y xz-utils
+
+# Install the dependencies
 install:
   - sudo apt-get update
   - sudo apt-get install -y cmake
@@ -37,5 +42,5 @@ script:
 
 # Create the packages before deploying
 before_deploy:
-  - cpack --config CPackConfig.cmake
-  - cpack --config CPackSourceConfig.cmake
+  - sudo cpack --config CPackConfig.cmake
+  - sudo cpack --config CPackSourceConfig.cmake
