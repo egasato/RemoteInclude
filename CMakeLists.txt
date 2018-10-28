@@ -96,13 +96,13 @@ if (WIN32)
             DESTINATION cmake
     )
     install(
-            FILES       ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+            FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
             DESTINATION /
     )
     install(
             FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigExport.cmake
-            RENAME      ${PROJECT_NAME}Config.cmake
             DESTINATION /
+            RENAME      ${PROJECT_NAME}Config.cmake
     )
     # @formatter:on
 else ()
@@ -112,7 +112,7 @@ else ()
             DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
     )
     install(
-            FILES       ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+            FILES       ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PACKAGE_NAME}
     )
     install(
@@ -125,3 +125,66 @@ endif ()
 
 # Export the package to the user's CMake registry
 export(PACKAGE RemoteInclude)
+
+#######################################################################
+########################### INSTALLER RULES ###########################
+#######################################################################
+
+# @formatter:off
+set(CPACK_GENERATOR                   "STGZ;TBZ2;TGZ;TXZ;TZ;ZIP;7Z")
+set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Simple CMake script to download and auto-include remote CMake scripts")
+set(CPACK_PACKAGE_VERSION              ${PROJECT_VERSION})
+set(CPACK_PACKAGE_VERSION_MAJOR        ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR        ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH        ${PROJECT_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_TWEAK        ${PROJECT_VERSION_TWEAK})
+set(CPACK_PACKAGE_INSTALL_DIRECTORY    ${PROJECT_NAME})
+set(CPACK_PACKAGE_ICON                 ${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.png)
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+
+set(CPACK_SOURCE_GENERATOR         "STGZ;TBZ2;TGZ;TXZ;TZ;ZIP;7Z")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
+list(APPEND CPACK_SOURCE_IGNORE_FILES build test media .git* .idea README.md)
+# @formatter:on
+
+# Enable extra generators for Windows
+if (WIN32)
+
+    # Enable the NSIS installer and configure it
+    # @formatter:off
+    list(APPEND CPACK_GENERATOR         NSIS NSIS64)
+    set(CPACK_NSIS_MODIFY_PATH          OFF)
+    set(CPACK_NSIS_DISPLAY_NAME        "${PROJECT_NAME} ${PROJECT_VERSION}")
+    set(CPACK_NSIS_HELP_LINK           "${PROJECT_HOMEPAGE_URL}")
+    set(CPACK_NSIS_URL_INFO_ABOUT      "${PROJECT_HOMEPAGE_URL}")
+    set(CPACK_NSIS_MUI_ICON            "${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.ico")
+    set(CPACK_NSIS_MUI_UNIICON         "${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.ico")
+    set(CPACK_NSIS_INSTALLED_ICON_NAME "${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.ico")
+    # @formatter:on
+
+    # Enable the WiX installer and configure it
+    list(APPEND CPACK_GENERATOR WIX)
+    set(CPACK_WIX_UPGRADE_GUID "A5997055-3D22-4447-A476-71AC4D7911FC")
+    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.ico")
+
+    # WiX requires the license to be RTF or TXT, so create a duplicate with another extension
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/LICENSE ${CMAKE_CURRENT_BINARY_DIR}/LICENSE.txt COPYONLY)
+    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_BINARY_DIR}/LICENSE.txt")
+
+    # @formatter:off
+    # Fix paths to be Windows-like (with backslash)
+    string(REPLACE "/" "\\\\" CPACK_PACKAGE_ICON             "${CPACK_PACKAGE_ICON}")
+    string(REPLACE "/" "\\\\" CPACK_NSIS_MUI_ICON            "${CPACK_NSIS_MUI_ICON}")
+    string(REPLACE "/" "\\\\" CPACK_NSIS_MUI_UNIICON         "${CPACK_NSIS_MUI_UNIICON}")
+    string(REPLACE "/" "\\\\" CPACK_NSIS_INSTALLED_ICON_NAME "${CPACK_NSIS_MUI_ICON}")
+    string(REPLACE "/" "\\\\" CPACK_WIX_PRODUCT_ICON         "${CPACK_WIX_PRODUCT_ICON}")
+    string(REPLACE "/" "\\\\" CPACK_RESOURCE_FILE_LICENSE    "${CPACK_RESOURCE_FILE_LICENSE}")
+    # @formatter:on
+
+endif ()
+
+# Include the CPack dependency
+include(CPack)
