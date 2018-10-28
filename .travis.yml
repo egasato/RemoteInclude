@@ -10,12 +10,16 @@ compiler:
 dist: trusty
 sudo: required
 
-# Configure, compile and test the project using the four different build types
+## Configure, compile and test the project using the four different build types
+
+matrix:
+  fast_finish: true
+
 env:
-- CMAKE_BUILD_TYPE=Debug
-- CMAKE_BUILD_TYPE=Release
-- CMAKE_BUILD_TYPE=RelWithDebInfo
-- CMAKE_BUILD_TYPE=MinSizeRel
+  - CMAKE_BUILD_TYPE=Debug
+  - CMAKE_BUILD_TYPE=Release
+  - CMAKE_BUILD_TYPE=RelWithDebInfo
+  - CMAKE_BUILD_TYPE=MinSizeRel
 
 # Install some utils
 before_install:
@@ -26,10 +30,12 @@ before_install:
 install:
   - sudo apt-get update
   - sudo apt-get install -y cmake
+  - cmake --version && which cmake
+  - cpack --version && which cpack
   - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
   - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --prefix /usr
-  - cmake --version
-  - cpack --version
+  - cmake --version && which cmake
+  - cpack --version && which cpack
 
 # Configure the project
 before_script:
