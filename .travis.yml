@@ -26,6 +26,7 @@ before_install:
 install:
   - sudo apt-get update
   - sudo apt-get install -y cmake
+  - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh | bash
 
 # Configure the project
 before_script:
