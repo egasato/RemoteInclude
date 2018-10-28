@@ -35,9 +35,16 @@
 </p>
 
 ## Table of Contents
+- [Requirements](#requirements)
 - [API](#api)
 - [Installation](#installation)
 - [Usage](#usage)
+
+## Requirements
+For this project to work you need (or your project needs) to meet the following requirements.
+- Use **CMake 3.0.2** or newer (**CMake 3.11** recommended).
+- **MUST NOT** define the name `RemoteInclude`.
+- **MUST NOT** define the name `_RemoteInclude`.
 
 ## API
 This section provides documentation on how each macro or function in RemoteInclude works.
@@ -45,16 +52,16 @@ It's intended to be a technical reference.
 
 ```cmake
 RemoteInclude(
-    inclusion_name            # String
-    URL url                   # URL
-    DESTINATION path          # Path
-    [INACTIVITY_TIMEOUT time] # Number
-    [TIMEOUT time]            # Number
-    [CACHE time]              # Number
-    [EXPECTED_HASH hash]      # String
-    [EXPECTED_MD5 hash]       # String
-    [SHOW_PROGRESS]           # Boolean 
-    [OVERWRITE]               # Boolean
+    inclusion_name          # String
+    URL url                 # URL
+    DESTINATION path        # Path
+    INACTIVITY_TIMEOUT time # [Number]
+    TIMEOUT time            # [Number]
+    CACHE time              # [Number]
+    EXPECTED_HASH hash      # [String]
+    EXPECTED_MD5 hash       # [String]
+    SHOW_PROGRESS           # [Boolean]
+    OVERWRITE               # [Boolean]
 )
 ```
 
