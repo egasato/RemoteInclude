@@ -71,6 +71,13 @@ configure_package_config_file(
 )
 # @formatter:on
 
+# If this project is being included by another project
+# copy the CMake configuration files to the global build dir
+if ("${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+    configure_file(${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake COPYONLY)
+    configure_file(${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake COPYONLY)
+endif ()
+
 #######################################################################
 ############################ INSTALL RULES ############################
 #######################################################################
@@ -111,4 +118,4 @@ else ()
 endif ()
 
 # Export the package to the user's CMake registry
-export(PACKAGE RemoteInclude)
+#export(PACKAGE RemoteInclude)
