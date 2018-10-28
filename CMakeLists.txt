@@ -39,19 +39,7 @@ write_basic_package_version_file(
 )
 # @formatter:on
 
-# Create the configuration file to use the project without installing
-# @formatter:off
-set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
-configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
-        PATH_VARS           RemoteInclude_CMAKE_DIR
-        NO_CHECK_REQUIRED_COMPONENTS_MACRO
-)
-# @formatter:on
-
-## Created the configuration file to install
+## Create the configuration file to install
 
 if (WIN32)
     set(RemoteInclude_CMAKE_DIR "cmake")
@@ -71,11 +59,29 @@ configure_package_config_file(
 )
 # @formatter:on
 
+# Create the configuration file to use the project without installing
+# @formatter:off
+set(RemoteInclude_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.cmake")
+configure_package_config_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        INSTALL_DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+        PATH_VARS           RemoteInclude_CMAKE_DIR
+        NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+# @formatter:on
+
 # If this project is being included by another project
 # copy the CMake configuration files to the global build dir
 if ("${CMAKE_CURRENT_BINARY_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake COPYONLY)
     configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake COPYONLY)
+    configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/.cmake/${PROJECT_NAME}Config.cmake.in
+            ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+            INSTALL_DESTINATION ${CMAKE_BINARY_DIR}
+            PATH_VARS           RemoteInclude_CMAKE_DIR
+            NO_CHECK_REQUIRED_COMPONENTS_MACRO
+    )
 endif ()
 
 #######################################################################
@@ -118,4 +124,4 @@ else ()
 endif ()
 
 # Export the package to the user's CMake registry
-#export(PACKAGE RemoteInclude)
+export(PACKAGE RemoteInclude)
