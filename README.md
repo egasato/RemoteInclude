@@ -156,13 +156,11 @@ if (NOT RemoteInclude_FOUND)
     include(FetchContent)
 
     # Specify how to retrieve the contents
-    # @formatter:off
     FetchContent_Declare(
             RemoteInclude
             GIT_REPOSITORY https://github.com/egasato/RemoteInclude.git
             GIT_TAG        develop
     )
-    # @formatter:on
 
     # Get the properties of the project
     FetchContent_GetProperties(RemoteInclude)
@@ -171,11 +169,9 @@ if (NOT RemoteInclude_FOUND)
     if (NOT RemoteInclude_POPULATED)
         message(STATUS "Downloading \"RemoteInclude\" contents...")
         FetchContent_Populate(RemoteInclude)
-        # @formatter:off
         set(RemoteInclude_POPULATED  "${remoteinclude_POPULATED}")
         set(RemoteInclude_SOURCE_DIR "${remoteinclude_SOURCE_DIR}")
         set(RemoteInclude_BINARY_DIR "${remoteinclude_BINARY_DIR}")
-        # @formatter:on
     endif ()
 
     # Add the project
