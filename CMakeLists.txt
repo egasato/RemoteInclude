@@ -33,7 +33,7 @@ include(CMakePackageConfigHelpers)
 # Write the ConfigVersion file
 # @formatter:off
 write_basic_package_version_file(
-        ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         VERSION       ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
@@ -99,7 +99,7 @@ else ()
             DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
     )
     install(
-            FILES       ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}ConfigVersion.cmake
+            FILES       ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PACKAGE_NAME}
     )
     install(
