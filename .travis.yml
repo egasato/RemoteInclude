@@ -10,6 +10,11 @@ compiler:
 dist: trusty
 sudo: required
 
+# Install CMake
+install:
+  - sudo apt-get update
+  - sudo apt-get install -y cmake
+
 # Configure, compile and test the project using the four different build types
 env:
   - CMAKE_BUILD_TYPE=Debug
