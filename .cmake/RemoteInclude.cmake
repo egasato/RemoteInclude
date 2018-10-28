@@ -55,6 +55,9 @@ function(_RemoteInclude include_path inclusion_name)
         get_filename_component(REMOTE_INCLUDE_DESTINATION "${REMOTE_INCLUDE_DESTINATION}" ABSOLUTE)
     endif ()
 
+    # Set the destination path in the parent scope
+    set("${include_path}" "${REMOTE_INCLUDE_DESTINATION}" PARENT_SCOPE)
+
     # Set the default parameters
     if (NOT DEFINED REMOTE_INCLUDE_INACTIVITY_TIMEOUT)
         set(REMOTE_INCLUDE_INACTIVITY_TIMEOUT 0)
@@ -123,9 +126,6 @@ function(_RemoteInclude include_path inclusion_name)
     string(TIMESTAMP unix_time "%s" UTC)
     set(REMOTE_INCLUDE_UNIX_TIME_${inclusion_name} ${unix_time} INTERNAL)
     file(${file_args})
-
-    # Set the destination path in the parent scope
-    set("${include_path}" "${REMOTE_INCLUDE_DESTINATION}" PARENT_SCOPE)
 
 endfunction(_RemoteInclude)
 
