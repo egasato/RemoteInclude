@@ -1,11 +1,6 @@
 # If our project had something to compile, it would be C probably
 language: c
 
-# Test all the compilers
-compiler:
-  - gcc
-  - clang
-
 # Use sudo-less Ubuntu Trusty 14.04.5 LTS
 dist: trusty
 sudo: required
