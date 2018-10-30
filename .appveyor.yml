@@ -9,10 +9,6 @@ platform:
   - x86
   - x64
 
-# Update all Git submodules
-install:
-  - git submodule update --init --recursive
-
 # Limit the maximum amount of concurrent jobs
 max_jobs: 1
 
