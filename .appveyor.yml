@@ -43,9 +43,9 @@ build_script:
 
 # Package the project before deployment
 before_deploy:
-  - cpack --config CPackConfig.cmake
-  - cpack --config CPackSourceConfig.cmake
-  - ps: $env:BuildAppScopePrefix = (Get-Content .\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'
+  - ps: $env:BuildAppScopePrefix = (Get-Content $env:APPVEYOR_BUILD_FOLDER\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'
+#  - cpack --config CPackConfig.cmake
+#  - cpack --config CPackSourceConfig.cmake
 
 # Configure the artifacts
 artifacts:
