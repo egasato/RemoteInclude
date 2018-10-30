@@ -1,5 +1,5 @@
 # Set the version
-version: '1.0.0.{build}'
+version: '1.0.0.0.{build}'
 
 # Set the image of the container/VM
 image: Visual Studio 2017
@@ -41,7 +41,30 @@ build_script:
   - cpack --config CPackConfig.cmake
   - cpack --config CPackSourceConfig.cmake
 
-# Package the project
-before_package:
+# Package the project before deployment
+before_deploy:
   - cpack --config CPackConfig.cmake
   - cpack --config CPackSourceConfig.cmake
+
+# Configure the artifacts
+artifacts:
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.bz2
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.gz
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.Z
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.zip
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.sh
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.7z
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.xz
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.exe
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.msi
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.bz2
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.gz
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.Z
+  - path: build/%APPVEYOR_PROJECT_NAME%.zip
+  - path: build/%APPVEYOR_PROJECT_NAME%.sh
+  - path: build/%APPVEYOR_PROJECT_NAME%.7z
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.xz
+
+# Deploy to GitHub Releases
+deploy_script:
+  - echo Doing nothing yet

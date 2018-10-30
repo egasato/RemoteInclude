@@ -40,10 +40,13 @@ before_script:
 script:
   - cmake --build .
   - sudo cmake --build . --target install
-  - sudo cpack --config CPackConfig.cmake
-  - sudo cpack --config CPackSourceConfig.cmake
 
 # Create the packages before deploying
 before_deploy:
   - sudo cpack --config CPackConfig.cmake
   - sudo cpack --config CPackSourceConfig.cmake
+
+# Deploy to GitHub Releases
+deploy:
+  provider: script
+  script: echo "Doing nothing yet"
