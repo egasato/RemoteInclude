@@ -1,0 +1,49 @@
+# Set the version
+version: '1.0.0.{build}'
+
+# Set the image of the container/VM
+image: Visual Studio 2017
+
+# Set the different types of architectures we will build for
+platform:
+  - x86
+  - x64
+
+# Update all Git submodules
+install:
+  - git submodule update --init --recursive
+
+# Limit the maximum amount of concurrent jobs
+max_jobs: 1
+
+# Set the different types of configurations we will build for
+configuration:
+  - Release
+  - Debug
+  - RelWithDebInfo
+  - MinSizeRel
+
+# Allow the project to fail if one configuration type fails
+matrix:
+  - fast_finish: true
+
+# Fetch repository as a ZIP archive downloading only the latest version
+shallow_clone: true
+clone_depth: 1
+
+# Configure the project before building it
+before_build:
+  - cmd: |-
+      cmake --version
+      mkdir build
+      cd build
+      cmake .. -G "Visual Studio 15 2017 Win64”
+
+# Build the project using the generated SLN file
+build_script:
+  - cmake --build . --config %CONFIGURATION% -- %MSBUILD_ARGS%
+
+# Package the project
+before_package:
+  - cpack --config CPackConfig.cmake
+  - cpack --config CPackSourceConfig.cmake
