@@ -5,9 +5,7 @@ version: '1.0.0.0.{build}'
 image: Visual Studio 2017
 
 # Set the different types of architectures we will build for
-platform:
-  - x86
-  - x64
+platform: Any CPU
 
 # Limit the maximum amount of concurrent jobs
 max_jobs: 8
