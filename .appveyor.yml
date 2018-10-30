@@ -1,5 +1,5 @@
 # Set the version
-version: '1.0.0.0.{build}'
+version: '1.0.0.0-{build}'
 
 # Set the image of the container/VM
 image: Visual Studio 2017
