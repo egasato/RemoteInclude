@@ -43,7 +43,7 @@ build_script:
 
 # Package the project before deployment
 before_deploy:
-  - ps: $env:BuildAppScopePrefix = (Get-Content $env:APPVEYOR_BUILD_FOLDER\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'
+  - ps: $env:PROJECT_VERSION = (Get-Content $env:APPVEYOR_BUILD_FOLDER\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'
 #  - cpack --config CPackConfig.cmake
 #  - cpack --config CPackSourceConfig.cmake
 
@@ -84,4 +84,4 @@ artifacts:
 
 # Deploy to GitHub Releases
 deploy_script:
-  - echo Doing nothing yet
+  - echo Doing nothing yet! %PROJECT_VERSION%
