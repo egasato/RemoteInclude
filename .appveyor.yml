@@ -33,7 +33,7 @@ before_build:
       cmake --version
       mkdir build
       cd build
-      cmake .. -G "Visual Studio 15 2017 Win64”
+      cmake .. -G "Visual Studio 15 2017 Win64"
 
 # Build the project using the generated SLN file
 build_script:
