@@ -45,10 +45,12 @@ script:
 before_deploy:
   - sudo cpack --config CPackConfig.cmake
   - sudo cpack --config CPackSourceConfig.cmake
+  - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print}')
 
 # Deploy to GitHub Releases
 deploy:
   provider: script
-  script: echo "Doing nothing yet"
+  script: echo "Doing nothing yet! ${PROJECT_VERSION}"
+  skip_cleanup: true
   on:
     branch: develop
