@@ -10,7 +10,7 @@ platform:
   - x64
 
 # Limit the maximum amount of concurrent jobs
-max_jobs: 1
+max_jobs: 8
 
 # Set the different types of configurations we will build for
 configuration:
@@ -38,6 +38,8 @@ before_build:
 # Build the project using the generated SLN file
 build_script:
   - cmake --build . --config %CONFIGURATION% -- %MSBUILD_ARGS%
+  - cpack --config CPackConfig.cmake
+  - cpack --config CPackSourceConfig.cmake
 
 # Package the project
 before_package:
