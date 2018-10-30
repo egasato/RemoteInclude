@@ -25,7 +25,7 @@ configuration:
 
 # Allow the project to fail if one configuration type fails
 matrix:
-  - fast_finish: true
+  fast_finish: true
 
 # Fetch repository as a ZIP archive downloading only the latest version
 shallow_clone: true
