@@ -45,7 +45,7 @@ script:
 before_deploy:
   - sudo cpack --config CPackConfig.cmake
   - sudo cpack --config CPackSourceConfig.cmake
-  - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print $2}')
+  - export PROJECT_VERSION=$(grep VERSION CMakeLists.txt | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$)
 
 # Deploy to GitHub Releases
 deploy:

@@ -45,7 +45,7 @@ build_script:
 before_deploy:
   - cpack --config CPackConfig.cmake
   - cpack --config CPackSourceConfig.cmake
-  - powershell -Command '(Get-Content .\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace ".*VERSION +(\d(\.\d){3})", \'$1\''
+  - powershell -Command "(Get-Content .\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'"
 
 # Configure the artifacts
 artifacts:
