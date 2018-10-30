@@ -47,26 +47,27 @@ before_deploy:
   - cpack --config CPackSourceConfig.cmake
   - powershell -Command "(Get-Content .\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){,3})', '$1'"
 
+  for /F "usebackq tokens=1" %%i in (`powershell ^(get-date^).dayofweek`) do set DOW=%%i
 # Configure the artifacts
 artifacts:
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.bz2
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.tar.bz2
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.bz2
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.gz
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.tar.gz
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.gz
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.Z
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.tar.Z
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.Z
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.zip
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.zip
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.zip
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.sh
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.sh
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.sh
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.7z
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.7z
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.7z
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.xz
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.tar.xz
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.xz
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.exe
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.exe
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.exe
   - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.msi
-    name: %APPVEYOR_PROJECT_NAME%-*-win32.msi
+    name: %APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.msi
   - path: build/%APPVEYOR_PROJECT_NAME%.tar.bz2
     name: %APPVEYOR_PROJECT_NAME%.tar.bz2
   - path: build/%APPVEYOR_PROJECT_NAME%.tar.gz
