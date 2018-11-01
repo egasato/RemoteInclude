@@ -22,12 +22,15 @@ env:
 
 # Install the dependencies
 install:
-  - sudo apt-get update
-  - sudo apt-get install -y cmake lrzip
-  - curl -s https://cmake.org/files/v3.12/cmake-3.12.3-Linux-x86_64.sh > cmake-3.12.3-Linux-x86_64.sh
-  - sudo mkdir -p /usr/local/cmake-3.12.3
-  - sudo bash cmake-3.12.3-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.12.3
-  - export PATH="/usr/local/cmake-3.12.3/bin:$PATH"
+  - |
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+      sudo apt-get update
+      sudo apt-get install -y cmake lrzip
+      curl -s https://cmake.org/files/v3.12/cmake-3.12.3-Linux-x86_64.sh > cmake-3.12.3-Linux-x86_64.sh
+      sudo mkdir -p /usr/local/cmake-3.12.3
+      sudo bash cmake-3.12.3-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.12.3
+      export PATH="/usr/local/cmake-3.12.3/bin:$PATH"
+    fi
 
 # Configure the project
 before_script:
