@@ -1,53 +1,70 @@
+# If our project had something to compile, it would be C probably
 language: c
+
+# Use sudo-less Ubuntu Trusty 14.04.5 LTS
 dist: trusty
 sudo: required
+
+## Configure, compile and test the project using the four different build types
+
 matrix:
   fast_finish: true
+
 env:
-- CMAKE_BUILD_TYPE=Debug
-- CMAKE_BUILD_TYPE=Release
-- CMAKE_BUILD_TYPE=RelWithDebInfo
-- CMAKE_BUILD_TYPE=MinSizeRel
+  - CMAKE_BUILD_TYPE=Debug
+  - CMAKE_BUILD_TYPE=Release
+  - CMAKE_BUILD_TYPE=RelWithDebInfo
+  - CMAKE_BUILD_TYPE=MinSizeRel
+
+# Install the dependencies
 install:
-- sudo apt-get update
-- sudo apt-get install -y cmake lrzip
-- curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
-- sudo mkdir -p /usr/local/cmake-3.13.0-rc2
-- sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.13.0-rc2
-- export PATH="/usr/local/cmake-3.13.0-rc2/bin:$PATH"
+  - sudo apt-get update
+  - sudo apt-get install -y cmake lrzip
+  - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
+  - sudo mkdir -p /usr/local/cmake-3.13.0-rc2
+  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.13.0-rc2
+  - export PATH="/usr/local/cmake-3.13.0-rc2/bin:$PATH"
+
+# Configure the project
 before_script:
-- mkdir build
-- cd build
-- cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ..
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ..
+
+# Build and install the project
 script:
-- cmake --build .
-- sudo cmake --build . --target install
+  - cmake --build .
+  - sudo cmake --build . --target install
+
+# Create the packages before deploying
 before_deploy:
-- sudo cpack --config CPackConfig.cmake
-- sudo cpack --config CPackSourceConfig.cmake
-- export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk
-  'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
-- export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
+  - sudo cpack --config CPackConfig.cmake
+  - sudo cpack --config CPackSourceConfig.cmake
+  - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
+  - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
+
+# Deploy to GitHub Releases
 deploy:
   - provider: releases
     api_key:
-      secure: C0AXQsU/a48nE05fCYF3ox9e/NyufSvqBjFnVF8saFuolKPo7+0XVntAAfF01nX1utylpxMzllKZVRlVOiEoR8cLD4cosf6TMILC0sr/HX+jWgShRvpqr4/TdUPe/qXBI6TQUGo/jiSqBKcfMgtnbbkDTs7DExUmGYpgewzd3u3tFlMl7XElRcvdplKn+a52Incpuqralb/SnPEUB61JTzULU5o7H2uOkbF7h43xW5mpWvFL9vqiifeY+wekpz/X2tW8oUYGXE9dthrsyT7tXtcHQw6QIk1wQzNW3QRceC4YXGPQSvqD/s8UJGdBPR6S8IvCJkGfQx17KaF1sDtkv3t7gdEjZC9wCmtYQuFPj0Fdei3N4W4tjFKG8DYpWHIIgYbbaXh+cmTS+5QAsqFWm4VjEdAd3Cl86nm7ywiRFa1tOJ3k1KGGh+SbmkHSXxfU+Z9dIBdJGI4Xr1rMS1edJ0wAK242Oz7BIyaW2imqx6rGtVdpI+VUh/RU0kDFxV4daEr/+FfI4Dbs1XCmELMaq4uWG81g+iQQOMbgtTTDJa3VKtowzDfllF8WCnpjwUn0MW8obXCMkTzwojXLhTrbwydT5o3cFIs5pM58ZCTUHkWZaMiYrPjTS4ro23c69q9RBkuWtAsskwu1efbJrmpZTJNBoI4V/23Divy/lNth+84=
+      secure: rNmaA6/dE01Wi2btv8kf1HuqpCS/Abqw6KhJwJt3D8/5QKBiTDHQwHL9GZGt7BgiairNOQ21EyYWmV9fjJHK+SCh+9W+0910nHG8TUjDFlnGCIvz+YTuoWwQ/YpzjvMdsNnCqV24JTo4GL58eAz2W7IuivQF87GIk0HhXOKjGnvlhD1jKwYwLivrmOvYPjufmYMxSNevEre7CErk2Wk/vSfCmSmG2wdZaNWgxMI4C7j3Su1qdKarnyB0HNTP86IrB/yulDxdsJJnl8iZRXzzcfqDho1qmFcA/MT4qAgMSAS5DLqma3r3WpcIhW+nH1y/kINDClzigNd/57XeRsdofg4UwIV2asK2Pnw/NZ0FelMvHLEEKCnXjaLKFAj6HBqvL1kNaPh7gvm5YVbLIeu2BoaAp2xJUU9TWbfu6D0KbIrk9XXe7sgPW3E48N8W6GzgDc00eTdggW5u10OGXEWhTE042H2M/Uq1nbbNDhul9AmTL1ucniK6cQ4iRWQH0GEecP56mxa+GBNEQ2vmjkrmndFWu6evkDrNApdCBQwiRexdXFZ2el2hSA8TECmh7JoohyGwL/rSFBxt+wKLN/py8Gr5u1aJjQX3GXM51/MJ7qQwpqGZIY00E7iTnRfSgpV0XjgozMNdBxtNOWskiy6X3ebJpTEJ8WzMgsgI1Eg6Pbk=
     file:
-    - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
-    - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
-    - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
-    - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.zip
-    - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.sh
-    - build/$PROJECT_NAME.tar.bz2
-    - build/$PROJECT_NAME.tar.gz
-    - build/$PROJECT_NAME.tar.Z
-    - build/$PROJECT_NAME.zip
-    - build/$PROJECT_NAME.sh
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.zip
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - build/$PROJECT_NAME.tar.bz2
+      - build/$PROJECT_NAME.tar.gz
+      - build/$PROJECT_NAME.tar.Z
+      - build/$PROJECT_NAME.zip
+      - build/$PROJECT_NAME.sh
     skip_cleanup: true
     overwrite: true
-    name: Release $TRAVIS_TAG
-    body: Automatic release made by Travis CI
+    name: "Release $TRAVIS_TAG"
+    body: "Automatic release made by Travis CI"
     draft: true
     prerelease: false
     on:
       branch: develop
+#      tags: true
