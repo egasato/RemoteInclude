@@ -50,7 +50,11 @@ before_deploy:
   - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
   - |
     if [[ "$TRAVIS_BRANCH" = release/* ]]; then
-      git tag -l 'untagged-*' | xargs -n1 -I{} sh -c 'git tag --delete {}; git push --delete origin {}'
+      git tag -l 'untagged-*' | xargs -r -n1 -I{} sh -c 'git tag --delete {}; git push --delete origin {}'
+      git tag --delete "v$PROJECT_VERSION"
+      git push origin :v$PROJECT_VERSION
+      git tag v$PROJECT_VERSION
+      git push --tags
     fi
 
 # Deploy to GitHub Releases
