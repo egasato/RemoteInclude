@@ -45,7 +45,7 @@ script:
   - cmake --build .
   - sudo cmake --build . --target install
   - |
-    if [[ "$TRAVIS_OS_NAME" = "linux" ]] && [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
+    if [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
       export RELEASE_PRERELEASE=YES
       export TRAVIS_TAG=v$PROJECT_VERSION
       git tag --force v$PROJECT_VERSION
