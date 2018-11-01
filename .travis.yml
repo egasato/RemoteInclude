@@ -5,10 +5,14 @@ language: c
 dist: trusty
 sudo: required
 
-## Configure, compile and test the project using the four different build types
+## Configure, compile and test the project using the four different build types and two operative systems
 
 matrix:
   fast_finish: true
+
+os:
+  - linux
+  - osx
 
 env:
   - CMAKE_BUILD_TYPE=Debug
@@ -38,7 +42,7 @@ script:
   - cmake --build .
   - sudo cmake --build . --target install
   - |
-    if [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]] && [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
       export RELEASE_PRERELEASE=YES
       export TRAVIS_TAG=v$PROJECT_VERSION
       git tag --force v$PROJECT_VERSION
