@@ -38,6 +38,8 @@ script:
   - |
     if [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
       export RELEASE_PRERELEASE=YES
+      git tag --delete v$PROJECT_VERSION
+      git tag v$PROJECT_VERSION
     else
       export RELEASE_PRERELEASE=NO
     fi
