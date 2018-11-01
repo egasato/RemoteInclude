@@ -83,14 +83,24 @@ artifacts:
 
 # Deploy to GitHub Releases
 deploy:
-  provider: GitHub
-  auth_token:
-    secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
-  release: "Release version %PROJECT_VERSION%"
-  description: "Release %PROJECT_VERSION% of %APPVEYOR_PROJECT_NAME%"
-  artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+){0,3}-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
-  draft: true
-  prerelease: false
-#  on:
-#    branch: master
-#    APPVEYOR_REPO_TAG: true
+  - provider: GitHub
+    auth_token:
+      secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
+    release: "Release %APPVEYOR_REPO_TAG_NAME%"
+    description: "Automatic release made by AppVeyor"
+    artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+    draft: false
+    prerelease: false
+    on:
+      branch: master
+      APPVEYOR_REPO_TAG: true
+  - provider: GitHub
+    auth_token:
+      secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
+    release: "Release v%PROJECT_VERSION%-rc{build}"
+    description: "Automatic release made by AppVeyor"
+    artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+    draft: false
+    prerelease: true
+    on:
+      branch: /release\/.*/
