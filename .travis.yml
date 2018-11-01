@@ -44,7 +44,7 @@ before_deploy:
   - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
   - git config --local user.name "egasato"
   - git config --local user.email "egasato@gmail.com"
-  - [[ "$TRAVIS_BRANCH" = release/* ]] \&\& git tag "v$PROJECT_VERSION"
+  - "[[ \"$TRAVIS_BRANCH\" = release/* ]] && git tag \"v$PROJECT_VERSION\""
 
 # Deploy to GitHub Releases
 deploy:
