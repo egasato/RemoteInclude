@@ -50,10 +50,10 @@ deploy:
       secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
     file_glob: true
     file:
-      - "build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.*"
-      - "build/$PROJECT_NAME-$PROJECT_VERSION-Linux.*"
-      - "build/$PROJECT_NAME.tar.*"
-      - "build/$PROJECT_NAME.*"
+      - "$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.*"
+      - "$PROJECT_NAME-$PROJECT_VERSION-Linux.*"
+      - "$PROJECT_NAME.tar.*"
+      - "$PROJECT_NAME.*"
     skip_cleanup: true
     overwrite: true
     name: "Release $TRAVIS_TAG"
