@@ -11,10 +11,10 @@ matrix:
   fast_finish: true
 
 env:
-#  - CMAKE_BUILD_TYPE=Debug
+  - CMAKE_BUILD_TYPE=Debug
   - CMAKE_BUILD_TYPE=Release
-#  - CMAKE_BUILD_TYPE=RelWithDebInfo
-#  - CMAKE_BUILD_TYPE=MinSizeRel
+  - CMAKE_BUILD_TYPE=RelWithDebInfo
+  - CMAKE_BUILD_TYPE=MinSizeRel
 
 # Install the dependencies
 install:
