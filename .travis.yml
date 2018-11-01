@@ -11,10 +11,10 @@ matrix:
   fast_finish: true
 
 env:
-  - CMAKE_BUILD_TYPE=Debug
+#  - CMAKE_BUILD_TYPE=Debug
   - CMAKE_BUILD_TYPE=Release
-  - CMAKE_BUILD_TYPE=RelWithDebInfo
-  - CMAKE_BUILD_TYPE=MinSizeRel
+#  - CMAKE_BUILD_TYPE=RelWithDebInfo
+#  - CMAKE_BUILD_TYPE=MinSizeRel
 
 # Install the dependencies
 install:
@@ -48,12 +48,6 @@ before_deploy:
   - sudo cpack --config CPackSourceConfig.cmake
   - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
   - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
-  - |
-    if [[ "$TRAVIS_BRANCH" = release/* ]]; then
-      git tag -l 'untagged-*' | xargs -r -n1 git tag --delete
-      git tag --delete "v$PROJECT_VERSION"
-      git tag v$PROJECT_VERSION
-    fi
 
 # Deploy to GitHub Releases
 deploy:
