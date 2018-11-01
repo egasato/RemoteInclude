@@ -69,6 +69,11 @@ deploy:
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
       - $PROJECT_NAME.tar.bz2
       - $PROJECT_NAME.tar.gz
       - $PROJECT_NAME.tar.Z
@@ -91,6 +96,11 @@ deploy:
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
       - $PROJECT_NAME.tar.bz2
       - $PROJECT_NAME.tar.gz
       - $PROJECT_NAME.tar.Z
