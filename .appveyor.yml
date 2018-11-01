@@ -94,6 +94,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
+    tag: "v%PROJECT_VERSION%"
     release: "Release v%PROJECT_VERSION%"
     description: "Automatic release made by AppVeyor"
     artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
