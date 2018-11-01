@@ -20,10 +20,10 @@ env:
 install:
   - sudo apt-get update
   - sudo apt-get install -y cmake lrzip
-  - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
-  - sudo mkdir -p /usr/local/cmake-3.13.0-rc2
-  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.13.0-rc2
-  - export PATH="/usr/local/cmake-3.13.0-rc2/bin:$PATH"
+  - curl -s https://cmake.org/files/v3.12/cmake-3.12.3-Linux-x86_64.sh > cmake-3.12.3-Linux-x86_64.sh
+  - sudo mkdir -p /usr/local/cmake-3.12.3
+  - sudo bash cmake-3.12.3-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.12.3
+  - export PATH="/usr/local/cmake-3.12.3/bin:$PATH"
 
 # Configure the project
 before_script:
