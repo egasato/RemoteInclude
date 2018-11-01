@@ -99,4 +99,5 @@ deploy:
     body: "Automatic release made by Travis CI"
     prerelease: true
     on:
+      all_branches: true
       condition: $RELEASE_MASTER = YES
