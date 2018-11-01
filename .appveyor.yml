@@ -88,7 +88,7 @@ deploy:
     secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
   release: "Release version %PROJECT_VERSION%"
   description: "Release %PROJECT_VERSION% of %APPVEYOR_PROJECT_NAME%"
-  artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+.*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+  artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+.*)-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
   draft: true
   prerelease: false
 #  on:
