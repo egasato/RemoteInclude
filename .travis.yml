@@ -41,11 +41,29 @@ before_deploy:
   - sudo cpack --config CPackConfig.cmake
   - sudo cpack --config CPackSourceConfig.cmake
   - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
+  - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
 
 # Deploy to GitHub Releases
 deploy:
-  provider: script
-  script: echo "Doing nothing yet! ${PROJECT_VERSION}"
-  skip_cleanup: true
-  on:
-    branch: develop
+  - provider: releases
+    api_key:
+      secure: DPcRUtAQmwTPPZo0aZVWkVH+AbKEPv2YKqrz2aFNPKot38xWqyrMZ+Sp4F5G248p3zRX2RlLi9BPgMlhQp3WlI8k755N7XhmpUtt0uYn+4Jmi/vwYjJjyZZtTIkyJdSZEOlMECJVk4wA/V3uzA4bzEzh5ZDDXcuWoY791WHUVzL+b2vQOSIMVCxVJnjUNEOKZwAdUozy+XjIfOncJcdT8CYYV9NNubKNboXtl/Qzt9h0B66xUD1qELkCwgxD/tjGVWrNXSERk7h464sgDvYKSXto6oGnKVqWKT6FN0DFCDwJR8EyZQB+5eSy9xx6YYgdaEK3SYPdtDgxH71QttIkRDBtD9JQeXGood16wLGLrBq7mIlhuW20THfWYvjOpSzSqtXobaANjAbxm+GovFZ5lPUMeMf6hV7comhTDMBGhlM91XY9uAlJiJBZKNKm0K7/Ip9J3GdUOvCYmiM2G34iqW2jNubFr9FYTcUYSBMClUjBTrjxkAzBofjp08Uqb0FRRCO2EpYfDsX+1cDBgpTD6c3uCHr5l5q0hZy9BW/o03rQ+YbzidhyBz447Sdf7n4u5toeUcxE6SkLxWLATyfO71/SzCJgXis3w5zcPYSzsZnJ4rthNBHPDSvDoRV6s4ItOS61YGqe2eS7gHxYhDANTfSX1prsGibZdQyEG6Thwtw=
+    file:
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.zip
+      - build/$PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - build/$PROJECT_NAME.tar.bz2
+      - build/$PROJECT_NAME.tar.gz
+      - build/$PROJECT_NAME.tar.Z
+      - build/$PROJECT_NAME.zip
+      - build/$PROJECT_NAME.sh
+    skip_cleanup: true
+    overwrite: true
+    name: "Release $TRAVIS_TAG"
+    body: "Automatic release made by Travis CI"
+    draft: true
+    prerelease: false
+#    on:
+#      tags: true
