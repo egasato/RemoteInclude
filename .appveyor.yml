@@ -7,9 +7,6 @@ image: Visual Studio 2017
 # Set the different types of architectures we will build for
 platform: Any CPU
 
-# Limit the maximum amount of concurrent jobs
-max_jobs: 4
-
 # Set the different types of configurations we will build for
 configuration:
   - Release
