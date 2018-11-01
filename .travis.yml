@@ -53,7 +53,6 @@ before_deploy:
       git tag -l 'untagged-*' | xargs -r -n1 git tag --delete
       git tag --delete "v$PROJECT_VERSION"
       git tag v$PROJECT_VERSION
-#      git push --tags
     fi
 
 # Deploy to GitHub Releases
