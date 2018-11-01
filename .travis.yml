@@ -44,7 +44,16 @@ before_deploy:
   - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
   - git config --local user.name "egasato"
   - git config --local user.email "egasato@gmail.com"
-  - "[[ \"$TRAVIS_BRANCH\" = release/* ]] && git tag \"v$PROJECT_VERSION\""
+  - |
+    if [[ "$TRAVIS_BRANCH" = release/* ]]; then
+      git tag "v$PROJECT_VERSION"
+    fi
+  - |
+    if [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
+      export RELEASE_MASTER=YES
+    else
+      export RELEASE_MASTER=NO
+    fi
 
 # Deploy to GitHub Releases
 deploy:
@@ -90,5 +99,4 @@ deploy:
     body: "Automatic release made by Travis CI"
     prerelease: true
     on:
-      branch: /release\/.*/
-      condition: $CMAKE_BUILD_TYPE = Release
+      condition: $RELEASE_MASTER = YES
