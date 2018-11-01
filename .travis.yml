@@ -52,7 +52,7 @@ before_deploy:
   - git config --local user.email "egasato@gmail.com"
   - |
     if [[ "$TRAVIS_BRANCH" = release/* ]]; then
-      git tag "v$PROJECT_VERSION"
+      git tag --force "v$PROJECT_VERSION"
     fi
 
 # Deploy to GitHub Releases
