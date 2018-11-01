@@ -48,12 +48,13 @@ before_deploy:
   - sudo cpack --config CPackSourceConfig.cmake
   - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
   - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
-#  - |
-#    if [[ "$TRAVIS_BRANCH" = release/* ]]; then
+  - |
+    if [[ "$TRAVIS_BRANCH" = release/* ]]; then
+      git tag -l 'untagged-*' >(xargs git tag --delete) >(xargs git push --delete origin)
 #      git push --delete origin "v$PROJECT_VERSION"
 #      git tag --delete "v$PROJECT_VERSION"
 #      git tag "v$PROJECT_VERSION"
-#    fi
+    fi
 
 # Deploy to GitHub Releases
 deploy:
