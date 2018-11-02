@@ -10,12 +10,9 @@ os:
 - linux
 - osx
 
-# Build using all the different CMake build types
+# Build using different CMake build types
 env:
-- CMAKE_BUILD_TYPE=Debug
 - CMAKE_BUILD_TYPE=Release
-- CMAKE_BUILD_TYPE=RelWithDebInfo
-- CMAKE_BUILD_TYPE=MinSizeRel
 
 # Allow the build matrix to fail fast
 matrix:
