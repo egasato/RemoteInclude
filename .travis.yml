@@ -24,10 +24,12 @@ matrix:
 # Install packages using the APT and Homebrew addons
 addons:
   apt:
+    update: true
     packages:
     - cmake
     - gawk
   homebrew:
+    update: true
     packages:
     - cmake
     - gawk
@@ -76,6 +78,9 @@ before_script:
 - |
   echo "PROJECT_VERSION          = $PROJECT_VERSION"
   echo "PROJECT_NAME             = $PROJECT_NAME"
+  echo "RELEASE_MASTER           = $RELEASE_MASTER"
+  echo "RELEASE_MASTER_LINUX     = $RELEASE_MASTER_LINUX"
+  echo "RELEASE_MASTER_OSX       = $RELEASE_MASTER_OSX"
   echo "RELEASE_PRERELEASE       = $RELEASE_PRERELEASE"
   echo "RELEASE_PRERELEASE_LINUX = $RELEASE_PRERELEASE_LINUX"
   echo "RELEASE_PRERELEASE_OSX   = $RELEASE_PRERELEASE_OSX"
