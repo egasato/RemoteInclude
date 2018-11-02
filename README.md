@@ -139,6 +139,8 @@ After the project has been configured, it is as easy as running the `install` ta
 cmake --build . --target install
 ```
 
+Alternatively, you can download your preferred installer at the [releases](https://github.com/egasato/RemoteInclude/releases) page.
+
 ## Usage
 In order to use this project, a few additions have to be done to your `CMakeLists.txt`.
 If you prefer, you can put the following contents in a custom `.cmake` file and include it in your `CMakeLists.txt` so it does not clutter your original file.

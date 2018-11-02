@@ -5,10 +5,14 @@ language: c
 dist: trusty
 sudo: required
 
-## Configure, compile and test the project using the four different build types
+## Configure, compile and test the project using the four different build types and two operative systems
 
 matrix:
   fast_finish: true
+
+os:
+  - linux
+  - osx
 
 env:
   - CMAKE_BUILD_TYPE=Debug
@@ -18,15 +22,24 @@ env:
 
 # Install the dependencies
 install:
-  - sudo apt-get update
-  - sudo apt-get install -y cmake lrzip
-  - curl -s https://cmake.org/files/v3.13/cmake-3.13.0-rc2-Linux-x86_64.sh > cmake-3.13.0-rc2-Linux-x86_64.sh
-  - sudo mkdir -p /usr/local/cmake-3.13.0-rc2
-  - sudo bash cmake-3.13.0-rc2-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.13.0-rc2
-  - export PATH="/usr/local/cmake-3.13.0-rc2/bin:$PATH"
+  - |
+    if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+      brew install gawk
+    fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+      sudo apt-get update
+      sudo apt-get install -y cmake lrzip
+      curl -s https://cmake.org/files/v3.12/cmake-3.12.3-Linux-x86_64.sh > cmake-3.12.3-Linux-x86_64.sh
+      sudo mkdir -p /usr/local/cmake-3.12.3
+      sudo bash cmake-3.12.3-Linux-x86_64.sh --skip-license --exclude-subdir --prefix=/usr/local/cmake-3.12.3
+      export PATH="/usr/local/cmake-3.12.3/bin:$PATH"
+    fi
 
 # Configure the project
 before_script:
+  - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | gawk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
+  - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ..
@@ -35,16 +48,19 @@ before_script:
 script:
   - cmake --build .
   - sudo cmake --build . --target install
+  - |
+    if [[ "$CMAKE_BUILD_TYPE" = "Release" ]] && [[ "$TRAVIS_BRANCH" = release/* ]]; then
+      export RELEASE_PRERELEASE=YES
+      export TRAVIS_TAG=v$PROJECT_VERSION
+      git tag --force v$PROJECT_VERSION
+    else
+      export RELEASE_PRERELEASE=NO
+    fi
 
 # Create the packages before deploying
 before_deploy:
   - sudo cpack --config CPackConfig.cmake
   - sudo cpack --config CPackSourceConfig.cmake
-  - export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | awk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
-  - export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
-  - git config --local user.name "egasato"
-  - git config --local user.email "egasato@gmail.com"
-  - [[ "$TRAVIS_BRANCH" = release/* ]] && git tag "v$PROJECT_VERSION"
 
 # Deploy to GitHub Releases
 deploy:
@@ -57,6 +73,11 @@ deploy:
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
       - $PROJECT_NAME.tar.bz2
       - $PROJECT_NAME.tar.gz
       - $PROJECT_NAME.tar.Z
@@ -79,6 +100,11 @@ deploy:
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
       - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
       - $PROJECT_NAME.tar.bz2
       - $PROJECT_NAME.tar.gz
       - $PROJECT_NAME.tar.Z
@@ -90,5 +116,5 @@ deploy:
     body: "Automatic release made by Travis CI"
     prerelease: true
     on:
-      branch: /release\/.*/
-      condition: $CMAKE_BUILD_TYPE = Release
+      all_branches: true
+      condition: $RELEASE_PRERELEASE = YES
