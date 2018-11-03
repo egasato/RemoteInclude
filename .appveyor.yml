@@ -90,9 +90,10 @@ deploy:
     secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
   release: "Release %APPVEYOR_REPO_TAG_NAME%"
   description: "Automatic release made by AppVeyor"
-  artifact: /%APPVEYOR_PROJECT_NAME%-[0-9]+(\.[0-9]+)*-win32\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+  artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
   draft: false
   prerelease: false
+  force_update: true
   on:
     branch: master
     APPVEYOR_REPO_TAG: true
@@ -107,5 +108,6 @@ deploy:
   artifact: /%APPVEYOR_PROJECT_NAME%-[0-9]+(\.[0-9]+)*-win32\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
   draft: false
   prerelease: true
+  force_update: true
   on:
     branch: /^release\/.*$/
