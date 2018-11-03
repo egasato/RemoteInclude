@@ -110,13 +110,8 @@ deploy:
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
-  - $PROJECT_NAME.tar.bz2
-  - $PROJECT_NAME.tar.gz
-  - $PROJECT_NAME.tar.Z
-  - $PROJECT_NAME.zip
-  - $PROJECT_NAME.sh
   skip_cleanup: true
-  overwrite: false
+  overwrite: true
   name: "Release $TRAVIS_TAG"
   body: "Automatic release made by Travis CI"
   on:
@@ -135,7 +130,7 @@ deploy:
   - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
   - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
   skip_cleanup: true
-  overwrite: false
+  overwrite: true
   name: "Release $TRAVIS_TAG"
   body: "Automatic release made by Travis CI"
   on:
@@ -143,7 +138,7 @@ deploy:
     branch: master
     condition: $RELEASE_MASTER_OSX = YES
 
-# Stable but not production-ready release for Linux (includes sources)
+# Stable but not production-ready release for Linux (does not include sources)
 - provider: releases
   api_key:
     secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
@@ -153,13 +148,8 @@ deploy:
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
   - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
-  - $PROJECT_NAME.tar.bz2
-  - $PROJECT_NAME.tar.gz
-  - $PROJECT_NAME.tar.Z
-  - $PROJECT_NAME.zip
-  - $PROJECT_NAME.sh
   skip_cleanup: true
-  overwrite: false
+  overwrite: true
   name: "Release v$PROJECT_VERSION"
   body: "Automatic release made by Travis CI"
   prerelease: true
@@ -178,7 +168,7 @@ deploy:
   - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
   - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
   skip_cleanup: true
-  overwrite: false
+  overwrite: true
   name: "Release v$PROJECT_VERSION"
   body: "Automatic release made by Travis CI"
   prerelease: true
