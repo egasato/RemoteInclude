@@ -132,7 +132,8 @@ export(PACKAGE RemoteInclude)
 # @formatter:off
 set(CPACK_GENERATOR                   "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
-set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija")
+set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija (Open Source Developer)")
+set(CPACK_PACKAGE_CONTACT             "Esaú García Sánchez-Torija <egasato@protonmail.com>")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Simple CMake script to download and auto-include remote CMake scripts")
 set(CPACK_PACKAGE_VERSION              ${PROJECT_VERSION})
 set(CPACK_PACKAGE_VERSION_MAJOR        ${PROJECT_VERSION_MAJOR})
@@ -141,12 +142,14 @@ set(CPACK_PACKAGE_VERSION_PATCH        ${PROJECT_VERSION_PATCH})
 set(CPACK_PACKAGE_VERSION_TWEAK        ${PROJECT_VERSION_TWEAK})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY    ${PROJECT_NAME})
 set(CPACK_PACKAGE_ICON                 ${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.png)
+# @formatter:on
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
-set(CPACK_SOURCE_GENERATOR         "TBZ2;TGZ;TZ;ZIP;STGZ")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
-list(APPEND CPACK_SOURCE_IGNORE_FILES build test media .git* .idea *.yml *.md)
+# @formatter:off
+set(CPACK_SOURCE_GENERATOR            "TBZ2;TGZ;TZ;ZIP;STGZ")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME    "${PROJECT_NAME}")
+list(APPEND CPACK_SOURCE_IGNORE_FILES  build test media .git* .idea *.yml *.md)
 # @formatter:on
 
 # Enable extra generators for Windows
@@ -183,6 +186,11 @@ if (WIN32)
     string(REPLACE "/" "\\\\" CPACK_WIX_PRODUCT_ICON         "${CPACK_WIX_PRODUCT_ICON}")
     string(REPLACE "/" "\\\\" CPACK_RESOURCE_FILE_LICENSE    "${CPACK_RESOURCE_FILE_LICENSE}")
     # @formatter:on
+
+endif ()
+
+# Add extra generators for UNIX-like operative systems
+if (UNIX)
 
 endif ()
 
