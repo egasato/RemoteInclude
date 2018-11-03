@@ -14,6 +14,14 @@
     <a title="Travis CI (develop)" href="https://travis-ci.org/egasato/RemoteInclude">
         <img alt="build | passing" src="https://img.shields.io/travis/com/egasato/RemoteInclude/develop.svg" />
     </a>
+    <!-- [![AppVeyor (master)](https://img.shields.io/appveyor/ci/egasato/RemoteInclude/master.svg)](https://ci.appveyor.com/project/egasato/RemoteInclude) -->
+    <a title="AppVeyor (master)" href="https://ci.appveyor.com/project/egasato/RemoteInclude">
+        <img alt="build | passing" src="https://img.shields.io/appveyor/ci/egasato/RemoteInclude/master.svg" />
+    </a>
+    <!-- [![AppVeyor (develop)](https://img.shields.io/appveyor/ci/egasato/RemoteInclude/develop.svg)](https://ci.appveyor.com/project/egasato/RemoteInclude) -->
+    <a title="AppVeyor (develop)" href="https://ci.appveyor.com/project/egasato/RemoteInclude">
+        <img alt="build | passing" src="https://img.shields.io/appveyor/ci/egasato/RemoteInclude/develop.svg" />
+    </a>
     <!-- ![GitHub tag](https://img.shields.io/github/tag/expressjs/express.svg) -->
     <a title="Latest release" href="https://github.com/egasato/RemoteInclude/releases">
         <img alt="tag | vX.X.X.X" src="https://img.shields.io/github/tag/egasato/RemoteInclude.svg" />
@@ -26,8 +34,6 @@
     <a title="HitCount" href="http://hits.dwyl.io/egasato/RemoteInclude">
         <img alt="HitCount | N hits" src="http://hits.dwyl.io/egasato/RemoteInclude.svg" />
     </a>
-    <!-- ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg) -->
-    <img alt="contributions | welcome" src="https://img.shields.io/badge/contributions-welcome-orange.svg" />
     <!-- [![License](https://img.shields.io/github/license/egasato/RemoteInclude.svg)](https://opensource.org/licenses/MPL-2.0) -->
     <a title="License" href="https://opensource.org/licenses/MPL-2.0">
         <img alt="license | MPL-2.0" src="https://img.shields.io/github/license/egasato/RemoteInclude.svg" />
