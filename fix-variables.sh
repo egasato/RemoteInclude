@@ -442,6 +442,52 @@ function update_APKBUILD() {
 # Updates the Dockerfile used for APK packaging
 function update_APK() {
     local script="
+        /^ARG[ \\t]+AUTHOR_.+=.*$/ {
+            contains = match(\$0, /^(ARG[ \\t]+AUTHOR_(.+)=).*$/, arr)
+            if (contains > 0) {
+                if (arr[2] == \"USER\") {
+                    print arr[1] \"\\\"$_AUTHOR_USER\\\"\"
+                } else if (arr[2] == \"NAME\") {
+                    print arr[1] \"\\\"$_AUTHOR_NAME\\\"\"
+                } else if (arr[2] == \"NAME_ASCII\") {
+                    print arr[1] \"\\\"$_AUTHOR_NAME_ASCII\\\"\"
+                } else if (arr[2] == \"EMAIL\") {
+                    print arr[1] \"\\\"$_AUTHOR_EMAIL\\\"\"
+                } else if (arr[2] == \"CONTACT\") {
+                    print arr[1] \"\\\"$_AUTHOR_CONTACT\\\"\"
+                } else if (arr[2] == \"CONTACT_ASCII\") {
+                    print arr[1] \"\\\"$_AUTHOR_CONTACT_ASCII\\\"\"
+                }
+                next
+            }
+        }
+        /^ARG[ \\t]+PROJECT_.+=.*$/ {
+            contains = match(\$0, /^(ARG[ \\t]+PROJECT_(.+)=).*$/, arr)
+            if (contains > 0) {
+                if (arr[2] == \"NAME\") {
+                    print arr[1] \"\\\"$_PROJECT_NAME\\\"\"
+                } else if (arr[2] == \"DESCRIPTION\") {
+                    print arr[1] \"\\\"$_PROJECT_DESCRIPTION\\\"\"
+                } else if (arr[2] == \"VERSION\") {
+                    print arr[1] \"\\\"$_PROJECT_VERSION\\\"\"
+                } else if (arr[2] == \"SHA512\") {
+                    print arr[1] \"\\\"$_PROJECT_SHA512\\\"\"
+                } else if (arr[2] == \"VENDOR\") {
+                    print arr[1] \"\\\"$_PROJECT_VENDOR\\\"\"
+                } else if (arr[2] == \"VENDOR_ASCII\") {
+                    print arr[1] \"\\\"$_PROJECT_VENDOR_ASCII\\\"\"
+                } else if (arr[2] == \"HOMEPAGE\") {
+                    print arr[1] \"\\\"$_PROJECT_HOMEPAGE\\\"\"
+                } else if (arr[2] == \"URL\") {
+                    print arr[1] \"\\\"$_PROJECT_URL\\\"\"
+                } else if (arr[2] == \"VCS\") {
+                    print arr[1] \"\\\"$_PROJECT_VCS\\\"\"
+                } else if (arr[2] == \"SOURCE\") {
+                    print arr[1] \"\\\"$_PROJECT_SOURCE\\\"\"
+                }
+                next
+            }
+        }
         /^ARG[ \\t]+LABEL_.+=.*$/ {
             contains = match(\$0, /^(ARG[ \\t]+LABEL_(.+)=).*$/, arr)
             if (contains > 0) {
