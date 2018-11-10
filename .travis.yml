@@ -38,8 +38,9 @@ install:
 
 # Configure the project
 before_script:
-- export PROJECT_VERSION=$(grep VERSION "${TRAVIS_BUILD_DIR}/CMakeLists.txt" | gawk 'NR==2 {print gensub(/^.*VERSION +([0-9]+(\.[0-9]+){,3}).*$/, "\\1", "g", $0)}')
-- export PROJECT_NAME=$(echo $TRAVIS_REPO_SLUG | cut -d'/' -f 2-)
+- source project.properties.sh
+- export PROJECT_VERSION=$_PROJECT_VERSION
+- export PROJECT_NAME=$_PROJECT_NAME
 - |
   if [ "$CMAKE_BUILD_TYPE" = "Release" ]; then
     if [ "$TRAVIS_BRANCH" = "master" ]; then

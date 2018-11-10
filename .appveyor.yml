@@ -1,5 +1,5 @@
 # Set the version
-version: "1.0.0.0-{build}"
+version: "1.0.0.1-{build}"
 
 # Set the image of the container/VM
 image:
@@ -11,7 +11,7 @@ platform: Any CPU
 
 # Set the different types of configurations we will build for
 configuration:
-  - Release
+- Release
 
 # Allow the project to fail if one configuration type fails
 matrix:
@@ -33,7 +33,7 @@ build_script:
 - cmake --build .
 - cpack --config CPackConfig.cmake
 - cpack --config CPackSourceConfig.cmake
-- ps: $env:PROJECT_VERSION = (Get-Content $env:APPVEYOR_BUILD_FOLDER\CMakeLists.txt | Select-String -CaseSensitive VERSION)[1].ToString().Trim() -Replace '.*VERSION +(\d+(\.\d+){1,3})', '$1'
+- ps: $env:PROJECT_VERSION = (ConvertFrom-StringData(Get-Content .\project.properties -raw)).PROJECT_VERSION
 
 # Configure the artifacts
 artifacts:
