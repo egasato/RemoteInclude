@@ -19,9 +19,9 @@ function ko() {
 function version_CMakeLists() {
     local script='
         /^[ \t]*project\(/,/[ \t]*[^\)]*\)/ {
-            contains = match($0, /^(.*VERSION[ \t]+)([0-9]+(\.[0-9]+)+)(.*)$/, arr)
+            contains = match($0, /^.*VERSION[ \t]+([0-9]+(\.[0-9]+)+).*$/, arr)
             if (contains > 0) {
-                print arr[2]
+                print arr[1]
             }
         }
     '
@@ -50,9 +50,17 @@ function update_version_CMakeLists() {
 function description_CMakeLists() {
     local script='
         /^[ \t]*project\(/,/[ \t]*[^\)]*\)/ {
-            contains = match($0, /^(.*DESCRIPTION[ \t]+)"(.*)"(.*)$/, arr)
+            contains = match($0, /^.*DESCRIPTION[ \t]+"(.*)".*$/, arr)
             if (contains > 0) {
-                print arr[2]
+                print arr[1]
+                exit
+            }
+        }
+        /^[ \t]*set\(/,/[ \t]*[^\)]*\)/ {
+            contains = match($0, /^.*PROJECT_DESCRIPTION[ \t]+"(.*)".*$/, arr)
+            if (contains > 0) {
+                print arr[1]
+                exit
             }
         }
     '
@@ -88,16 +96,16 @@ function update_description_CMakeLists() {
 function homepage_CMakeLists() {
     local script='
         /^[ \t]*project\(/,/[ \t]*[^\)]*\)/ {
-            contains = match($0, /^(.*HOMEPAGE_URL[ \t]+)([^ \t]+)(.*)$/, arr)
+            contains = match($0, /^.*HOMEPAGE_URL[ \t]+([^ \t]+).*$/, arr)
             if (contains > 0) {
-                print arr[2]
+                print arr[1]
                 exit
             }
         }
         /^[ \t]*set\(/,/[ \t]*[^\)]*\)/ {
-            contains = match($0, /^(.*PROJECT_HOMEPAGE_URL[ \t]+)([^ \t]*)(.*)$/, arr)
+            contains = match($0, /^.*PROJECT_HOMEPAGE_URL[ \t]+([^ \t\)]*).*$/, arr)
             if (contains > 0) {
-                print arr[2]
+                print arr[1]
                 exit
             }
         }
@@ -364,7 +372,7 @@ function update_packager_apk() {
     mv .abuild/abuild.conf.tmp .abuild/abuild.conf
 }
 
-# Updates the packager inside the abuild.conf file
+# Updates the APKBUILD spec file
 function update_APKBUILD() {
     local script="
         /^_my_name=.*$/ {
@@ -429,6 +437,42 @@ function update_APKBUILD() {
     "
     gawk "$script" APKBUILD > APKBUILD.tmp
     mv APKBUILD.tmp APKBUILD
+}
+
+# Updates the Dockerfile used for APK packaging
+function update_APK() {
+    local script="
+        /^ARG[ \\t]+LABEL_.+=.*$/ {
+            contains = match(\$0, /^(ARG[ \\t]+LABEL_(.+)=).*$/, arr)
+            if (contains > 0) {
+                if (arr[2] == \"BUILD_DATE\") {
+                    print arr[1] \"\\\"$_LABEL_BUILD_DATE\\\"\"
+                } else if (arr[2] == \"NAME\") {
+                    print arr[1] \"\\\"$_LABEL_NAME\\\"\"
+                } else if (arr[2] == \"DESCRIPTION\") {
+                    print arr[1] \"\\\"$_LABEL_DESCRIPTION\\\"\"
+                } else if (arr[2] == \"USAGE\") {
+                    print arr[1] \"\\\"$_LABEL_USAGE\\\"\"
+                } else if (arr[2] == \"URL\") {
+                    print arr[1] \"\\\"$_LABEL_URL\\\"\"
+                } else if (arr[2] == \"VCS_URL\") {
+                    print arr[1] \"\\\"$_LABEL_VCS_URL\\\"\"
+                } else if (arr[2] == \"VCS_REF\") {
+                    print arr[1] \"\\\"$_LABEL_VCS_REF\\\"\"
+                } else if (arr[2] == \"VENDOR\") {
+                    print arr[1] \"\\\"$_LABEL_VENDOR\\\"\"
+                } else if (arr[2] == \"VERSION\") {
+                    print arr[1] \"\\\"$_LABEL_VERSION\\\"\"
+                }
+                next
+            }
+        }
+        {
+            print
+        }
+    "
+    gawk "$script" Dockerfile.apk > Dockerfile.apk.tmp
+    mv Dockerfile.apk.tmp Dockerfile.apk
 }
 
 ## Logic
@@ -506,4 +550,8 @@ ok
 
 echo -n "* APKBUILD (variables):            "
 update_APKBUILD
+ok
+
+echo -n "* Dockerfile.apk (variables):      "
+update_APK
 ok
