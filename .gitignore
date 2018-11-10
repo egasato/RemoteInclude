@@ -1,3 +1,7 @@
+# Ignore the signing keys
+.abuild/*
+!.abuild/abuild.conf
+
 ### CMake template
 CMakeCache.txt
 CMakeFiles
