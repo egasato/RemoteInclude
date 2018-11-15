@@ -9,65 +9,27 @@ fi
 __dirname=$(dirname "$__filename")
 __name=$(basename "$__filename" ".sh")
 
-# Read each line discarding comments and allowing multi-line variables with backslash
-trim=""
-concat=0
-declare -a lines
-while read -r line; do
-    line=$(echo -n "$line" | sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//')
-    if [[ ! "$line" =~ ^(#|!) ]] || [[ ${concat} -eq 1 ]]; then
-        if [[ "${line:$((${#line}-1)):1}" == "\\" ]]; then
-            line=$(echo -n "$line" | sed 's/[[:space:]]*\\/ /g')
-            if [[ ${concat} -eq 1 ]]; then
-                trim="$trim$line"
-            else
-                trim="$line"
-            fi
-            concat=1
-        else
-            if [[ ${concat} -eq 1 ]]; then
-                trim="$trim$line"
-            elif [[ "$line" == "" ]]; then
-                continue
-            else
-                trim="$line"
-            fi
-            lines+=("$trim")
-            concat=0
-            trim=""
-        fi
-    fi
-done < "$__dirname/$__name"
+# Check if the Config::Properties module is installed (perl)
+if ! perldoc -l Config::Properties > /dev/null 2>&1; then
+    cpan install Config::Properties
+fi
 
-# Process the variables
+# Read everything using Perl
 declare -a _ULTRA_PRIVATE
-for line in "${lines[@]}"; do
-    no_var=$(echo -n "$line" | tr -d '[:alnum:]_[:space:]')
-    delimiter="${no_var::1}"
-    if [[ "$delimiter" != ":" ]] && [[ "$delimiter" != "=" ]] ; then
-        echo "Bad line: $line"
-        exit
-    fi
-    key=$(echo -n "$line"   | cut -d"$delimiter" -f 1  | sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//')
-    value=$(echo -n "$line" | cut -d"$delimiter" -f 2- | sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//')
-    if [[ "${key::1}" =~ ^[0-9]$ ]]; then
-        echo "Bad variable name: $key"
-        exit
-    fi
-    eval "_ULTRA_PRIVATE_$key='$value'"
+while IFS= read -rd '' key && IFS= read -rd '' value; do
+    eval "_ULTRA_PRIVATE_${key}='$value'"
     _ULTRA_PRIVATE+=("$key")
-done
+done < <(
+    perl -MConfig::Properties -l0 -e '
+        $p = Config::Properties->new();
+        $p->load(STDIN);
+        print for $p->properties' < "$__dirname/$__name"
+)
 
 # Remove previous variables
 unset __filename
 unset __dirname
 unset __name
-unset trim
-unset concat
-unset lines
-unset line
-unset no_var
-unset delimiter
 unset key
 unset value
 
