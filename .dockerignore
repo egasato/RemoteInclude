@@ -1,0 +1,12 @@
+# Ignore as much as possible to avoid leaking private files
+**/*
+
+## Add the exceptions
+
+# Alpine Linux packaging files
+!Dockerfile.apk
+!.abuild/abuild.conf
+!APKBUILD
+
+# The source files
+!.cmake/*.cmake
