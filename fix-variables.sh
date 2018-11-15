@@ -407,8 +407,8 @@ function update_APKBUILD() {
             contains = match(\$0, /^(url=).*$/, arr)
             if (contains > 0) {
                 url = \"\\\"$_PROJECT_VCS\\\"\"
-                sub(\"$_AUTHOR_USER\", \"\$_my_group\", url)
-                sub(\"$_PROJECT_NAME\", \"\$_my_name\", url)
+                sub(\"$_AUTHOR_USER\", \"\${_my_group}\", url)
+                sub(\"$_PROJECT_NAME\", \"\${_my_name}\", url)
                 print arr[1] url
                 next
             }
@@ -416,10 +416,10 @@ function update_APKBUILD() {
         /^source=.*$/ {
             contains = match(\$0, /^(source=).*$/, arr)
             if (contains > 0) {
-                url = \"\\\"$_PROJECT_SOURCE\\\"\"
-                sub(\"$_AUTHOR_USER\", \"\$_my_group\", url)
-                gsub(\"$_PROJECT_NAME\", \"\$_my_name\", url)
-                sub(\"$_PROJECT_VERSION\", \"\$pkgver\", url)
+                url = \"\\\"\${pkgname}.tar.gz::$_PROJECT_SOURCE\\\"\"
+                sub(\"$_AUTHOR_USER\", \"\${_my_group}\", url)
+                gsub(\"$_PROJECT_NAME\", \"\${_my_name}\", url)
+                sub(\"$_PROJECT_VERSION\", \"\${pkgver}\", url)
                 print arr[1] url
                 next
             }
