@@ -8,7 +8,7 @@ else
 fi
 __dirname=$(dirname "$__filename")
 
-# Sets the version number used inside CMakeLists.txt
+# Sets the project description used inside CMakeLists.txt
 function set_description_CMakeLists() {
     gawk -v project_description="$1" -f "$__dirname/set_description_CMakeLists.gawk" CMakeLists.txt > CMakeLists.txt.tmp
     mv CMakeLists.txt.tmp CMakeLists.txt
