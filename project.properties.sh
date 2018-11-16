@@ -23,7 +23,8 @@ done < <(
     perl -MConfig::Properties -l0 -e '
         $p = Config::Properties->new();
         $p->load(STDIN);
-        print for $p->properties' < "$__dirname/$__name"
+        print for $p->properties
+    ' < "$__dirname/$__name"
 )
 
 # Remove previous variables
@@ -50,6 +51,7 @@ unset var
 [[ "$_PROJECT_URL"          == "" ]] && _PROJECT_URL="https://github.com/$_AUTHOR_USER/$_PROJECT_NAME"
 [[ "$_PROJECT_VCS"          == "" ]] && _PROJECT_VCS="$_PROJECT_URL.git"
 [[ "$_PROJECT_SOURCE"       == "" ]] && _PROJECT_SOURCE="https://github.com/$_AUTHOR_USER/$_PROJECT_NAME/releases/download/$_PROJECT_NAME.tar.gz"
+[[ "$_PROJECT_SHA512"       == "" ]] && _PROJECT_SHA512=$(sha512sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" | cut -d' ' -f1)
 [[ "$_LABEL_BUILD_DATE"     == "" ]] && _LABEL_BUILD_DATE="$(date +%FT%T.%NZ)"
 [[ "$_LABEL_NAME"           == "" ]] && _LABEL_NAME="$_PROJECT_NAME"
 [[ "$_LABEL_DESCRIPTION"    == "" ]] && _LABEL_DESCRIPTION="$_PROJECT_DESCRIPTION"
