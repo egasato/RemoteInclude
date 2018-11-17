@@ -47,8 +47,8 @@ if [[ -z ${TESTING+x} ]]; then
         --build-arg UID=$(id -u) \
         --build-arg GID=$(id -g) \
         \
-        -t remoteinclude-apk                              \
-        -f Dockerfile.apk                                 \
+        -t remoteinclude-apk \
+        -f Dockerfile.apk    \
         .
 else
     docker build -t remoteinclude-apk -f Dockerfile.apk .
