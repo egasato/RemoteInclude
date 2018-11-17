@@ -167,7 +167,7 @@ if [[ -f APKBUILD ]]; then
     if [[ "$(get_sha512_APKBUILD)" == "$_PROJECT_SHA512" ]]; then
         ok
     else
-        set_sha512_APKBUILD "$_PROJECT_NAME" "$_PROJECT_SHA512"
+        set_sha512_APKBUILD "$_PROJECT_SHA512" "$_PROJECT_NAME" "$_PROJECT_VERSION"
         [[ "$(get_sha512_APKBUILD)" == "$_PROJECT_SHA512" ]] && ok || ko
     fi
 fi
