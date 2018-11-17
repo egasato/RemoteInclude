@@ -12,11 +12,11 @@ cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 # Configure the project
 # @formatter:off
 project(RemoteInclude
-        VERSION   1.0.0.0
-        LANGUAGES NONE
+        VERSION   1.0.0.1
+        LANGUAGES C
 )
-set(PROJECT_DESCRIPTION "Adds support for the inclusion of remote CMake scripts")
-set(PROJECT_HOMEPAGE_URL https://github.com/egasato/RemoteInclude)
+set(PROJECT_DESCRIPTION  "Simple CMake script to download and auto-include remote CMake scripts")
+set(PROJECT_HOMEPAGE_URL  https://github.com/egasato/RemoteInclude)
 # @formatter:on
 
 #######################################################################
@@ -134,7 +134,7 @@ set(CPACK_GENERATOR                   "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija (Open Source Developer)")
 set(CPACK_PACKAGE_CONTACT             "Esaú García Sánchez-Torija <egasato@protonmail.com>")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Simple CMake script to download and auto-include remote CMake scripts")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Simple CMake script to download and auto-include remote CMake scripts")
 set(CPACK_PACKAGE_VERSION              ${PROJECT_VERSION})
 set(CPACK_PACKAGE_VERSION_MAJOR        ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR        ${PROJECT_VERSION_MINOR})
@@ -147,9 +147,9 @@ set(CPACK_PACKAGE_ICON                 ${CMAKE_CURRENT_SOURCE_DIR}/media/Logo.pn
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
 # @formatter:off
-set(CPACK_SOURCE_GENERATOR            "TBZ2;TGZ;TZ;ZIP;STGZ")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME    "${PROJECT_NAME}")
-list(APPEND CPACK_SOURCE_IGNORE_FILES  build test media .git* .idea *.yml *.md)
+set(CPACK_SOURCE_GENERATOR         "TBZ2;TGZ;TZ;ZIP;STGZ")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
+set(CPACK_SOURCE_IGNORE_FILES      "(build|test|media|\\\\.(git.*|idea)|.*\\\\.(yml|md)|APKBUILD)")
 # @formatter:on
 
 # Enable extra generators for Windows
@@ -186,11 +186,6 @@ if (WIN32)
     string(REPLACE "/" "\\\\" CPACK_WIX_PRODUCT_ICON         "${CPACK_WIX_PRODUCT_ICON}")
     string(REPLACE "/" "\\\\" CPACK_RESOURCE_FILE_LICENSE    "${CPACK_RESOURCE_FILE_LICENSE}")
     # @formatter:on
-
-endif ()
-
-# Add extra generators for UNIX-like operative systems
-if (UNIX)
 
 endif ()
 
