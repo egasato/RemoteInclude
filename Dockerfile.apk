@@ -18,7 +18,7 @@ ARG AUTHOR_EMAIL="egasato@protonmail.com"
 ARG PROJECT_NAME="RemoteInclude"
 ARG PROJECT_DESCRIPTION="Simple CMake script to download and auto-include remote CMake scripts"
 ARG PROJECT_VERSION="1.0.0.1"
-ARG PROJECT_SHA512="3421692bd9d341c1820e9150e0ecb813c2c1804c47bac7fcf7b724e6c62ce4d946c04564879723fec06681c0ff88b049527fd3c4a0245b0398851ec407c72122"
+ARG PROJECT_SHA512="d6c8fc506af1eb94c364752fcba9015c25988c1a07b68a8b1b594fed4b61fc91a3d381b936159b66f11fb4299e6904ed5e47f35b5f8ae2cfac65d3ae378b68b0"
 
 ENV AUTHOR_USER         ${AUTHOR_USER}
 ENV AUTHOR_NAME         ${AUTHOR_NAME}
@@ -48,13 +48,13 @@ ENV PROJECT_URL          ${PROJECT_URL}
 ENV PROJECT_SOURCE       ${PROJECT_SOURCE}
 ENV CMAKE_BUILD_TYPE     ${CMAKE_BUILD_TYPE}
 
-ARG LABEL_BUILD_DATE="2018-11-17T20:17:50.599972900Z"
+ARG LABEL_BUILD_DATE="2018-11-17T20:19:13.613495800Z"
 ARG LABEL_NAME="RemoteInclude"
 ARG LABEL_DESCRIPTION="Simple CMake script to download and auto-include remote CMake scripts"
-ARG LABEL_USAGE="https://github.com/egasato/RemoteInclude/blob/99d881cc4702715dba9e28369b9ab35b0446fe8a/README.md"
+ARG LABEL_USAGE="https://github.com/egasato/RemoteInclude/blob/cdea6d57d370ec8348d087698e0213369624ff12/README.md"
 ARG LABEL_URL="https://egasato.github.io/RemoteInclude"
 ARG LABEL_VCS_URL="https://github.com/egasato/RemoteInclude.git"
-ARG LABEL_VCS_REF="99d881cc4702715dba9e28369b9ab35b0446fe8a"
+ARG LABEL_VCS_REF="cdea6d57d370ec8348d087698e0213369624ff12"
 ARG LABEL_VENDOR="Esaú García Sánchez-Torija (Open Source Developer)"
 ARG LABEL_VERSION="v1.0.0.1"
 
