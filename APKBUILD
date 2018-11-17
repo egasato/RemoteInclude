@@ -60,4 +60,4 @@ package() {
     cmake --build . --target install
 }
 
-sha512sums="3bae6137e48faba3c2c8aea4649d4231837384939fdad99c5862426b306b523269bb49746f25d2d8a77510b18a22b8c4d4c6fc8fa1aa1959bade1d51463251e0 RemoteInclude-1.0.0.1.tar.gz"
+sha512sums="590a4b9e882775cc6e4e555317b019f833c4549fbb49df044a6aab90e8773cdac43c5e6a12e212fdaf2de1d84a368658f4503cc8e3182907ae4a833630d48e78  RemoteInclude-1.0.0.1.tar.gz"
