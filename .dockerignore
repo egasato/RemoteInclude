@@ -6,7 +6,9 @@
 # Alpine Linux packaging files
 !Dockerfile.apk
 !.abuild/abuild.conf
+!.abuild/*.rsa.pub
 !APKBUILD
 
 # The source files
+!scripts/entrypoint-apk.sh
 !.cmake/*.cmake
