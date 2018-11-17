@@ -8,8 +8,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.            #
 #######################################################################
 
-pkgname=RemoteInclude
-pkgver=1.0.0.1
+pkgname="RemoteInclude"
+pkgver="1.0.0.1"
 pkgrel=1
 pkgdesc="Simple CMake script to download and auto-include remote CMake scripts"
 arch="noarch"
@@ -18,7 +18,7 @@ license="MPLv2"
 depends=""
 makedepends="cmake"
 install=""
-source="${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${pkgname}/releases/download/${pkgname}.tar.gz"
+source="${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${pkgname}/releases/download/v${pkgver}/${pkgname}.tar.gz"
 builddir="${srcdir}/${pkgname}-${pkgver}"
 
 # Unpacks and configures the sources
@@ -60,4 +60,4 @@ package() {
     cmake --build . --target install
 }
 
-sha512sums="c3a6f54ffcfbbad3fe8e233bf369e2807b51a8d59c09afa61b6e7a3dd0dfd62cb92a4bd9da77bab152209376399795e14eec353a633ba5c0c980b8391653fbc0 RemoteInclude.tar.gz"
+sha512sums="3421692bd9d341c1820e9150e0ecb813c2c1804c47bac7fcf7b724e6c62ce4d946c04564879723fec06681c0ff88b049527fd3c4a0245b0398851ec407c72122 RemoteInclude.tar.gz"
