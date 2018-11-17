@@ -149,7 +149,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 # @formatter:off
 set(CPACK_SOURCE_GENERATOR         "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}")
-set(CPACK_SOURCE_IGNORE_FILES      "(build|test|media|\\\\.(git.*|idea)|.*\\\\.(yml|md)|APKBUILD|Dockerfile\\\\..*|docker-.*\\\\.sh|\\\\.dockerignore)")
+set(CPACK_SOURCE_IGNORE_FILES      "(build|\\\\.(git.*|idea)|.*\\\\.(yml|md)|APKBUILD|Dockerfile\\\\..*|docker-.*\\\\.sh|\\\\.dockerignore)")
 # @formatter:on
 
 # Enable extra generators for Windows
