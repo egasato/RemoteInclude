@@ -19,7 +19,7 @@ depends=""
 makedepends="cmake"
 install=""
 source="${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${pkgname}/releases/download/v${pkgver}/${pkgname}.tar.gz"
-builddir="${srcdir}/${pkgname}-${pkgver}"
+builddir="${srcdir}/${pkgname}"
 
 # Unpacks and configures the sources
 prepare() {
@@ -60,4 +60,4 @@ package() {
     cmake --build . --target install
 }
 
-sha512sums="590a4b9e882775cc6e4e555317b019f833c4549fbb49df044a6aab90e8773cdac43c5e6a12e212fdaf2de1d84a368658f4503cc8e3182907ae4a833630d48e78  RemoteInclude-1.0.0.1.tar.gz"
+sha512sums="32902b540ce1caf0f8ade3b37353fae8ce4bf4e0faa1937283ffd88946e77f40184f62009c424f0e3ac00e33c821910339bf771669ca1c2ff9cbec53e7d7dadd  RemoteInclude-1.0.0.1.tar.gz"
