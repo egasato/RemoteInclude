@@ -41,7 +41,7 @@
 </p>
 
 <p align="center">
-    <sub>Built with <span color="red">&#128151;</span> by <a href="https://twitter.com/esa_u7">Esaú García Sánchez-Torija</a> and <a href="https://github.com/egasato/RemoteInclude/graphs/contributors">contributors</a>
+    <sub>Built with <span color="red">&#128151;</span> by <a href="https://twitter.com/esa_u7">Esaú García Sánchez-Torija</a>
 </p>
 
 ## Table of Contents
