@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the version number used inside .appveyor.yml
 function set_version_AppVeyor() {
-    gawk -v project_version="$1" -f "$__dirname/set_version_AppVeyor.gawk" .appveyor.yml > .appveyor.yml.tmp
-    mv .appveyor.yml.tmp .appveyor.yml
+    gawk -v project_version="$1" -f "$__dirname/set_version_AppVeyor.gawk" "$__dirname/../.appveyor.yml" > "$__dirname/../.appveyor.yml.tmp"
+    mv "$__dirname/../.appveyor.yml.tmp" "$__dirname/../.appveyor.yml"
 }

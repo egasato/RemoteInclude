@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the project vendor used inside CMakeLists.txt
 function get_vendor_CMakeLists() {
-    gawk -f "$__dirname/get_vendor_CMakeLists.gawk" CMakeLists.txt
+    gawk -f "$__dirname/get_vendor_CMakeLists.gawk" "$__dirname/../CMakeLists.txt"
 }

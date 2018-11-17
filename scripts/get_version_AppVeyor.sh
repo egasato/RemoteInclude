@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the version number used inside .appveyor.yml
 function get_version_AppVeyor() {
-    gawk -f "$__dirname/get_version_AppVeyor.gawk" .appveyor.yml
+    gawk -f "$__dirname/get_version_AppVeyor.gawk" "$__dirname/../.appveyor.yml"
 }

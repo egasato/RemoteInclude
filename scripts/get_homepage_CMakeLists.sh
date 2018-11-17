@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the project homepage used inside CMakeLists.txt
 function get_homepage_CMakeLists() {
-    gawk -f "$__dirname/get_homepage_CMakeLists.gawk" CMakeLists.txt
+    gawk -f "$__dirname/get_homepage_CMakeLists.gawk" "$__dirname/../CMakeLists.txt"
 }

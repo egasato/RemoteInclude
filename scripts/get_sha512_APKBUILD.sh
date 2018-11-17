@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the SHA512 hash used inside APKBUILD
 function get_sha512_APKBUILD() {
-    gawk -f "$__dirname/get_sha512_APKBUILD.gawk" APKBUILD
+    gawk -f "$__dirname/get_sha512_APKBUILD.gawk" "$__dirname/../APKBUILD"
 }

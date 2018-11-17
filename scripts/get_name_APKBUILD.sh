@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the project name used inside APKBUILD
 function get_name_APKBUILD() {
-    gawk -f "$__dirname/get_name_APKBUILD.gawk" APKBUILD
+    gawk -f "$__dirname/get_name_APKBUILD.gawk" "$__dirname/../APKBUILD"
 }

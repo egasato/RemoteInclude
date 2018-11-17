@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the project source url used inside APKBUILD
 function get_source_APKBUILD() {
-    gawk -f "$__dirname/get_source_APKBUILD.gawk" APKBUILD | sed "s/\${pkgname}/$1/g" | sed "s/\${pkgver}/$2/g"
+    gawk -f "$__dirname/get_source_APKBUILD.gawk" "$__dirname/../APKBUILD" | sed "s/\${pkgname}/$1/g" | sed "s/\${pkgver}/$2/g"
 }

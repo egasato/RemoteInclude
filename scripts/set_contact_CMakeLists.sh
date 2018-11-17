@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the author contact used inside CMakeLists.txt
 function set_contact_CMakeLists() {
-    gawk -v author_contact="$1" -f "$__dirname/set_contact_CMakeLists.gawk" CMakeLists.txt > CMakeLists.txt.tmp
-    mv CMakeLists.txt.tmp CMakeLists.txt
+    gawk -v author_contact="$1" -f "$__dirname/set_contact_CMakeLists.gawk" "$__dirname/../CMakeLists.txt" > "$__dirname/../CMakeLists.txt.tmp"
+    mv "$__dirname/../CMakeLists.txt.tmp" "$__dirname/../CMakeLists.txt"
 }

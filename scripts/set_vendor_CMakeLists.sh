@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the project vendor used inside CMakeLists.txt
 function set_vendor_CMakeLists() {
-    gawk -v project_vendor="$1" -f "$__dirname/set_vendor_CMakeLists.gawk" CMakeLists.txt > CMakeLists.txt.tmp
-    mv CMakeLists.txt.tmp CMakeLists.txt
+    gawk -v project_vendor="$1" -f "$__dirname/set_vendor_CMakeLists.gawk" "$__dirname/../CMakeLists.txt" > "$__dirname/../CMakeLists.txt.tmp"
+    mv "$__dirname/../CMakeLists.txt.tmp" "$__dirname/../CMakeLists.txt"
 }

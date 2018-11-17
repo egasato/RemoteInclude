@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the version number used inside APKBUILD
 function get_version_APKBUILD() {
-    gawk -f "$__dirname/get_version_APKBUILD.gawk" APKBUILD
+    gawk -f "$__dirname/get_version_APKBUILD.gawk" "$__dirname/../APKBUILD"
 }

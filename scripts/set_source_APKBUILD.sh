@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the project source url used inside APKBUILD
 function set_source_APKBUILD() {
-    gawk -v project_source="$1" -v project_name="$2" -v project_version="$3" -v project_name="$2" -f "$__dirname/set_source_APKBUILD.gawk" APKBUILD > APKBUILD.tmp
-    mv APKBUILD.tmp APKBUILD
+    gawk -v project_source="$1" -v project_name="$2" -v project_version="$3" -v project_name="$2" -f "$__dirname/set_source_APKBUILD.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
+    mv "$__dirname/../APKBUILD.tmp" "$__dirname/../APKBUILD"
 }

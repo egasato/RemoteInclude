@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the packager used inside abuild.conf
 function get_packager_abuild() {
-    gawk -f "$__dirname/get_packager_abuild.gawk" .abuild/abuild.conf
+    gawk -f "$__dirname/get_packager_abuild.gawk" "$__dirname/../.abuild/abuild.conf"
 }

@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the version number used inside CMakeLists.txt
 function get_version_CMakeLists() {
-    gawk -f "$__dirname/get_version_CMakeLists.gawk" CMakeLists.txt
+    gawk -f "$__dirname/get_version_CMakeLists.gawk" "$__dirname/../CMakeLists.txt"
 }

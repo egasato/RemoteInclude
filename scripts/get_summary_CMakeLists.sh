@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the project summary used inside CMakeLists.txt
 function get_summary_CMakeLists() {
-    gawk -f "$__dirname/get_summary_CMakeLists.gawk" CMakeLists.txt
+    gawk -f "$__dirname/get_summary_CMakeLists.gawk" "$__dirname/../CMakeLists.txt"
 }

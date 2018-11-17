@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the project description used inside CMakeLists.txt
 function set_description_CMakeLists() {
-    gawk -v project_description="$1" -f "$__dirname/set_description_CMakeLists.gawk" CMakeLists.txt > CMakeLists.txt.tmp
-    mv CMakeLists.txt.tmp CMakeLists.txt
+    gawk -v project_description="$1" -f "$__dirname/set_description_CMakeLists.gawk" "$__dirname/../CMakeLists.txt" > "$__dirname/../CMakeLists.txt.tmp"
+    mv "$__dirname/../CMakeLists.txt.tmp" "$__dirname/../CMakeLists.txt"
 }

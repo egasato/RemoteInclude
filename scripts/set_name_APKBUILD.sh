@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the project name used inside APKBUILD
 function set_name_APKBUILD() {
-    gawk -v project_name="$1" -f "$__dirname/set_name_APKBUILD.gawk" APKBUILD > APKBUILD.tmp
-    mv APKBUILD.tmp APKBUILD
+    gawk -v project_name="$1" -f "$__dirname/set_name_APKBUILD.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
+    mv "$__dirname/../APKBUILD.tmp" "$__dirname/../APKBUILD"
 }

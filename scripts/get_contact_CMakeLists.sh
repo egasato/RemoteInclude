@@ -10,5 +10,5 @@ __dirname=$(dirname "$__filename")
 
 # Returns the author contact used inside CMakeLists.txt
 function get_contact_CMakeLists() {
-    gawk -f "$__dirname/get_contact_CMakeLists.gawk" CMakeLists.txt
+    gawk -f "$__dirname/get_contact_CMakeLists.gawk" "$__dirname/../CMakeLists.txt"
 }

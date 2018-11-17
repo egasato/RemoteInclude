@@ -10,6 +10,6 @@ __dirname=$(dirname "$__filename")
 
 # Sets the packager used inside abuild.conf
 function set_packager_abuild() {
-    gawk -v author_contact="$1" -f "$__dirname/set_packager_abuild.gawk" .abuild/abuild.conf > .abuild/abuild.conf.tmp
-    mv .abuild/abuild.conf.tmp .abuild/abuild.conf
+    gawk -v author_contact="$1" -f "$__dirname/set_packager_abuild.gawk" "$__dirname/../.abuild/abuild.conf" > "$__dirname/../.abuild/abuild.conf.tmp"
+    mv "$__dirname/../.abuild/abuild.conf.tmp" "$__dirname/../.abuild/abuild.conf"
 }
