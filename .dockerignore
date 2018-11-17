@@ -11,4 +11,3 @@
 
 # The source files
 !scripts/entrypoint-apk.sh
-!.cmake/*.cmake
