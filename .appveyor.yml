@@ -3,15 +3,15 @@ version: "1.0.0.1-{build}"
 
 # Set the image of the container/VM
 image:
-- Visual Studio 2017
-- Ubuntu1804
+  - Visual Studio 2017
+  - Ubuntu1804
 
 # Set the different types of architectures we will build for
 platform: Any CPU
 
 # Set the different types of configurations we will build for
 configuration:
-- Release
+  - Release
 
 # Allow the project to fail if one configuration type fails
 matrix:
@@ -19,95 +19,95 @@ matrix:
 
 # Install the dependencies (or output some information about them)
 install:
-- cmake --version
-- cpack --version
+  - cmake --version
+  - cpack --version
 
 # Configure the project before building it
 before_build:
-- mkdir build && cd build
-- sh: cmake -DCMAKE_BUILD_TYPE=$CONFIGURATION ..
-- cmd: cmake -DCMAKE_BUILD_TYPE=%CONFIGURATION% .. -G "Visual Studio 15 2017 Win64"
+  - mkdir build && cd build
+  - sh: cmake -DCMAKE_BUILD_TYPE=$CONFIGURATION ..
+  - cmd: cmake -DCMAKE_BUILD_TYPE=%CONFIGURATION% .. -G "Visual Studio 15 2017 Win64"
 
 # Build the project using the generated SLN file
 build_script:
-- cmake --build .
-- cpack --config CPackConfig.cmake
-- cpack --config CPackSourceConfig.cmake
-- ps: $env:PROJECT_VERSION = (ConvertFrom-StringData(Get-Content .\project.properties -raw)).PROJECT_VERSION
+  - cmake --build .
+  - cpack --config CPackConfig.cmake
+  - cpack --config CPackSourceConfig.cmake
+  - ps: $env:PROJECT_VERSION = (ConvertFrom-StringData(Get-Content .\project.properties -raw)).PROJECT_VERSION
 
 # Configure the artifacts
 artifacts:
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.bz2
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.bz2"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.gz
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.gz"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.Z
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.Z"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.zip
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.zip"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.sh
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.sh"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.7z
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.7z"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.xz
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.xz"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.exe
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.exe"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-win32.msi
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.msi"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.bz2
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.bz2"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.gz
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.gz"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.Z
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.Z"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.zip
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.zip"
-- path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.sh
-  name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.sh"
-- path: build/%APPVEYOR_PROJECT_NAME%.tar.bz2
-  name: "%APPVEYOR_PROJECT_NAME%.tar.bz2"
-- path: build/%APPVEYOR_PROJECT_NAME%.tar.gz
-  name: "%APPVEYOR_PROJECT_NAME%.tar.gz"
-- path: build/%APPVEYOR_PROJECT_NAME%.tar.Z
-  name: "%APPVEYOR_PROJECT_NAME%.tar.Z"
-- path: build/%APPVEYOR_PROJECT_NAME%.zip
-  name: "%APPVEYOR_PROJECT_NAME%.zip"
-- path: build/%APPVEYOR_PROJECT_NAME%.sh
-  name: "%APPVEYOR_PROJECT_NAME%.sh"
-- path: build/%APPVEYOR_PROJECT_NAME%.7z
-  name: "%APPVEYOR_PROJECT_NAME%.7z"
-- path: build/%APPVEYOR_PROJECT_NAME%.tar.xz
-  name: "%APPVEYOR_PROJECT_NAME%.tar.xz"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.bz2
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.bz2"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.gz
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.gz"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.Z
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.Z"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.zip
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.zip"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.sh
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.sh"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.7z
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.7z"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.tar.xz
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.tar.xz"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.exe
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.exe"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-win32.msi
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-win32.msi"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.bz2
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.bz2"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.gz
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.gz"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.tar.Z
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.tar.Z"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.zip
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.zip"
+  - path: build/%APPVEYOR_PROJECT_NAME%-*-Linux.sh
+    name: "%APPVEYOR_PROJECT_NAME%-%PROJECT_VERSION%-Linux.sh"
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.bz2
+    name: "%APPVEYOR_PROJECT_NAME%.tar.bz2"
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.gz
+    name: "%APPVEYOR_PROJECT_NAME%.tar.gz"
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.Z
+    name: "%APPVEYOR_PROJECT_NAME%.tar.Z"
+  - path: build/%APPVEYOR_PROJECT_NAME%.zip
+    name: "%APPVEYOR_PROJECT_NAME%.zip"
+  - path: build/%APPVEYOR_PROJECT_NAME%.sh
+    name: "%APPVEYOR_PROJECT_NAME%.sh"
+  - path: build/%APPVEYOR_PROJECT_NAME%.7z
+    name: "%APPVEYOR_PROJECT_NAME%.7z"
+  - path: build/%APPVEYOR_PROJECT_NAME%.tar.xz
+    name: "%APPVEYOR_PROJECT_NAME%.tar.xz"
 
 ## Deploy to GitHub Releases
 
 deploy:
 
-# Stable and production-ready release for Windows (does not include sources)
-- provider: GitHub
-  auth_token:
-    secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
-  release: "Release %APPVEYOR_REPO_TAG_NAME%"
-  description: "Automatic release made by AppVeyor"
-  artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
-  draft: false
-  prerelease: false
-  force_update: true
-  on:
-    branch: master
-    APPVEYOR_REPO_TAG: true
+  # Stable and production-ready release for Windows (does not include sources)
+  - provider: GitHub
+    auth_token:
+      secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
+    release: "Release %APPVEYOR_REPO_TAG_NAME%"
+    description: "Automatic release made by AppVeyor"
+    artifact: /%APPVEYOR_PROJECT_NAME%(-[0-9]+(\.[0-9]+)*-win32)?\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+    draft: false
+    prerelease: false
+    force_update: true
+    on:
+      branch: master
+      APPVEYOR_REPO_TAG: true
 
-# Stable but not production-ready release for Windows (does not include sources)
-- provider: GitHub
-  auth_token:
-    secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
-  tag: "v%PROJECT_VERSION%"
-  release: "Release v%PROJECT_VERSION%"
-  description: "Automatic release made by AppVeyor"
-  artifact: /%APPVEYOR_PROJECT_NAME%-[0-9]+(\.[0-9]+)*-win32\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
-  draft: false
-  prerelease: true
-  force_update: true
-  on:
-    branch: /^release\/.*$/
+  # Stable but not production-ready release for Windows (does not include sources)
+  - provider: GitHub
+    auth_token:
+      secure: r98gmXU6ZKjuf9/4yGdVTzFjJU2JSkMCd+VhTJzKh0bFxKkuJUYB5R8qvxeIfTBS
+    tag: "v%PROJECT_VERSION%"
+    release: "Release v%PROJECT_VERSION%"
+    description: "Automatic release made by AppVeyor"
+    artifact: /%APPVEYOR_PROJECT_NAME%-[0-9]+(\.[0-9]+)*-win32\.(7z|msi|exe|sh|zip|tar\.(bz2|gz|xz|Z))/
+    draft: false
+    prerelease: true
+    force_update: true
+    on:
+      branch: /^release\/.*$/

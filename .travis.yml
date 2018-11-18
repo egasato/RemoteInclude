@@ -7,12 +7,12 @@ sudo: false
 
 # Also use Mac OS X (multiplies the build matrix)
 os:
-- linux
-- osx
+  - linux
+  - osx
 
 # Build using different CMake build types
 env:
-- CMAKE_BUILD_TYPE=Release
+  - CMAKE_BUILD_TYPE=Release
 
 # Allow the build matrix to fail fast
 matrix:
@@ -23,156 +23,170 @@ addons:
   apt:
     update: true
     packages:
-    - cmake
-    - gawk
+      - bash
+      - perl
+      - gawk
+      - cmake
+      - docker-ce
   homebrew:
     update: true
     packages:
-    - cmake
-    - gawk
+      - bash
+      - perl
+      - gawk
+      - cmake
+
+services:
+  - docker
 
 # Install the dependencies (or output some information about them)
 install:
-- cmake --version
-- cpack --version
+  - cmake --version
+  - cpack --version
+  - docker --version
 
 # Configure the project
 before_script:
-- source project.properties.sh
-- export PROJECT_VERSION=$_PROJECT_VERSION
-- export PROJECT_NAME=$_PROJECT_NAME
-- |
-  if [ "$CMAKE_BUILD_TYPE" = "Release" ]; then
-    if [ "$TRAVIS_BRANCH" = "master" ]; then
-      export RELEASE_MASTER=YES
-      [ "$TRAVIS_OS_NAME" = "linux" ] && export RELEASE_MASTER_LINUX=YES || export RELEASE_MASTER_LINUX=NO
-      [ "$TRAVIS_OS_NAME" = "osx" ]   && export RELEASE_MASTER_OSX=YES   || export RELEASE_MASTER_OSX=NO
+  - source project.properties.sh
+  - export PROJECT_VERSION=$_PROJECT_VERSION
+  - export PROJECT_NAME=$_PROJECT_NAME
+  - |
+    if [ "$CMAKE_BUILD_TYPE" = "Release" ]; then
+      if [ "$TRAVIS_BRANCH" = "master" ]; then
+        export RELEASE_MASTER=YES
+        [ "$TRAVIS_OS_NAME" = "linux" ] && export RELEASE_MASTER_LINUX=YES || export RELEASE_MASTER_LINUX=NO
+        [ "$TRAVIS_OS_NAME" = "osx" ]   && export RELEASE_MASTER_OSX=YES   || export RELEASE_MASTER_OSX=NO
+      else
+        export RELEASE_MASTER=NO
+        export RELEASE_MASTER_LINUX=NO
+        export RELEASE_MASTER_OSX=NO
+      fi
+      if [[ "$TRAVIS_BRANCH" = release/* ]]; then
+        export RELEASE_PRERELEASE=YES
+        [ "$TRAVIS_OS_NAME" = "linux" ] && export RELEASE_PRERELEASE_LINUX=YES || export RELEASE_PRERELEASE_LINUX=NO
+        [ "$TRAVIS_OS_NAME" = "osx" ]   && export RELEASE_PRERELEASE_OSX=YES   || export RELEASE_PRERELEASE_OSX=NO
+        if [ "$TRAVIS_TAG" = "" ]; then
+          export TRAVIS_TAG=v$PROJECT_VERSION
+          git tag --force v$PROJECT_VERSION
+        fi
+      else
+        export RELEASE_PRERELEASE=NO
+        export RELEASE_PRERELEASE_LINUX=NO
+        export RELEASE_PRERELEASE_OSX=NO
+      fi
     else
       export RELEASE_MASTER=NO
       export RELEASE_MASTER_LINUX=NO
       export RELEASE_MASTER_OSX=NO
-    fi
-    if [[ "$TRAVIS_BRANCH" = release/* ]]; then
-      export RELEASE_PRERELEASE=YES
-      [ "$TRAVIS_OS_NAME" = "linux" ] && export RELEASE_PRERELEASE_LINUX=YES || export RELEASE_PRERELEASE_LINUX=NO
-      [ "$TRAVIS_OS_NAME" = "osx" ]   && export RELEASE_PRERELEASE_OSX=YES   || export RELEASE_PRERELEASE_OSX=NO
-      if [ "$TRAVIS_TAG" = "" ]; then
-        export TRAVIS_TAG=v$PROJECT_VERSION
-        git tag --force v$PROJECT_VERSION
-      fi
-    else
       export RELEASE_PRERELEASE=NO
       export RELEASE_PRERELEASE_LINUX=NO
       export RELEASE_PRERELEASE_OSX=NO
     fi
-  else
-    export RELEASE_MASTER=NO
-    export RELEASE_MASTER_LINUX=NO
-    export RELEASE_MASTER_OSX=NO
-    export RELEASE_PRERELEASE=NO
-    export RELEASE_PRERELEASE_LINUX=NO
-    export RELEASE_PRERELEASE_OSX=NO
-  fi
-- |
-  echo "PROJECT_VERSION          = $PROJECT_VERSION"
-  echo "PROJECT_NAME             = $PROJECT_NAME"
-  echo "RELEASE_MASTER           = $RELEASE_MASTER"
-  echo "RELEASE_MASTER_LINUX     = $RELEASE_MASTER_LINUX"
-  echo "RELEASE_MASTER_OSX       = $RELEASE_MASTER_OSX"
-  echo "RELEASE_PRERELEASE       = $RELEASE_PRERELEASE"
-  echo "RELEASE_PRERELEASE_LINUX = $RELEASE_PRERELEASE_LINUX"
-  echo "RELEASE_PRERELEASE_OSX   = $RELEASE_PRERELEASE_OSX"
-- mkdir build && cd build
-- cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ..
+  - |
+    echo "PROJECT_VERSION          = $PROJECT_VERSION"
+    echo "PROJECT_NAME             = $PROJECT_NAME"
+    echo "RELEASE_MASTER           = $RELEASE_MASTER"
+    echo "RELEASE_MASTER_LINUX     = $RELEASE_MASTER_LINUX"
+    echo "RELEASE_MASTER_OSX       = $RELEASE_MASTER_OSX"
+    echo "RELEASE_PRERELEASE       = $RELEASE_PRERELEASE"
+    echo "RELEASE_PRERELEASE_LINUX = $RELEASE_PRERELEASE_LINUX"
+    echo "RELEASE_PRERELEASE_OSX   = $RELEASE_PRERELEASE_OSX"
+  - mkdir build && cd build
+  - cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ..
 
 # Build and install the project
 script:
-- cmake --build .
+  - cmake --build .
 
 # Create the packages before deploying
 before_deploy:
-- sudo cpack --config CPackConfig.cmake
-- |
-  if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-    sudo cpack --config CPackSourceConfig.cmake
-  fi
+  - sudo cpack --config CPackConfig.cmake
+  - |
+    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      sudo cpack --config CPackSourceConfig.cmake
+      bash docker-apk.sh
+    fi
 
-## Deploy to GitHub Releases
+  ## Deploy to GitHub Releases
 
 deploy:
 
-# Stable and production-ready release for Linux (includes sources)
-- provider: releases
-  api_key:
-    secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
-  file:
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
-  skip_cleanup: true
-  overwrite: true
-  name: "Release $TRAVIS_TAG"
-  body: "Automatic release made by Travis CI"
-  on:
-    tags: true
-    branch: master
-    condition: $RELEASE_MASTER_LINUX = YES
+  # Stable and production-ready release for Linux (includes sources)
+  - provider: releases
+    api_key:
+      secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
+    file:
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-*.src.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-r*.apk
+    skip_cleanup: true
+    overwrite: true
+    name: "Release $TRAVIS_TAG"
+    body: "Automatic release made by Travis CI"
+    on:
+      tags: true
+      branch: master
+      condition: $RELEASE_MASTER_LINUX = YES
 
-# Stable and production-ready release for Mac OS X (does not include sources)
-- provider: releases
-  api_key:
-    secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
-  file:
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
-  skip_cleanup: true
-  overwrite: true
-  name: "Release $TRAVIS_TAG"
-  body: "Automatic release made by Travis CI"
-  on:
-    tags: true
-    branch: master
-    condition: $RELEASE_MASTER_OSX = YES
+  # Stable and production-ready release for Mac OS X (does not include sources)
+  - provider: releases
+    api_key:
+      secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
+    file:
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
+    skip_cleanup: true
+    overwrite: true
+    name: "Release $TRAVIS_TAG"
+    body: "Automatic release made by Travis CI"
+    on:
+      tags: true
+      branch: master
+      condition: $RELEASE_MASTER_OSX = YES
 
-# Stable but not production-ready release for Linux (does not include sources)
-- provider: releases
-  api_key:
-    secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
-  file:
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
-  - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
-  skip_cleanup: true
-  overwrite: true
-  name: "Release v$PROJECT_VERSION"
-  body: "Automatic release made by Travis CI"
-  prerelease: true
-  on:
-    all_branches: true
-    condition: $RELEASE_PRERELEASE_LINUX = YES
+  # Stable but not production-ready release for Linux (does not include sources)
+  - provider: releases
+    api_key:
+      secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
+    file:
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Linux.sh
+      - $PROJECT_NAME-$PROJECT_VERSION-*.src.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-r*.apk
+    skip_cleanup: true
+    overwrite: true
+    name: "Release v$PROJECT_VERSION"
+    body: "Automatic release made by Travis CI"
+    prerelease: true
+    on:
+      all_branches: true
+      condition: $RELEASE_PRERELEASE_LINUX = YES
 
-# Stable but not production-ready release for Mac OS X (does not include sources)
-- provider: releases
-  api_key:
-    secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
-  file:
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
-  - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
-  skip_cleanup: true
-  overwrite: true
-  name: "Release v$PROJECT_VERSION"
-  body: "Automatic release made by Travis CI"
-  prerelease: true
-  on:
-    all_branches: true
-    condition: $RELEASE_PRERELEASE_OSX = YES
+  # Stable but not production-ready release for Mac OS X (does not include sources)
+  - provider: releases
+    api_key:
+      secure: "PBeVaGgFOZUZE694cSJEDpe8/XBokJkl1JLI05pzT5vxS64hmqpDTwMSkPjHmlcnqRDNmzShn68auE4fi/EB03n0dB0SRKdAH2BnnDFiSk3h3MmtOmp2kFe8NiXrGBwaCA8pE/0uHXNedd8pdt7nkkiN5qQIHyYwBF7LKWEhvZ6lqtdf2sE7gCt+G6gnm8gq8CCLKe2S5iaiqNGL4ynsOLEdAPsDZbhUK0GieaQavpDFaDlN3G16HAD4M63a+mSHVR7odTn4B81P3gmPa2J3nEguccHC+70nOYHYngVYx41X00zK6eHAxKbtOjKVeTYAEfNQ6bLe+9zu55SknX3BeCBRzGUfVK1DwURvn33nMnWSMbtYVAKoEzH4Rmt1onQyUMmaTCGMX/XbndVZ09hrW99l0Iq77HwpmgOxH/FDiv44t11Hukoi1OWOTAhhnRI73vqnFI7wujgg1RBqyez9ceff5DKCichTfoGj5XJ99ZEIlEmj28t+x4unHd7Igon1aYqK0mIksCnVmcs1LqKIO3m441it0Fm6JsiNDEgNE01e49XKF2xxJwpgLQgJsVy7kWqZ8VOYKktZWKXsUtBgLOjb51s6SyYY5Y2ta09QEnb8d50V8DlXHUuSpWiYKGAKCrLV3EepHisMzpzK90rksfWX0wYkLo3f1RNKW8BPd98="
+    file:
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.bz2
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.gz
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.tar.Z
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.zip
+      - $PROJECT_NAME-$PROJECT_VERSION-Darwin.sh
+    skip_cleanup: true
+    overwrite: true
+    name: "Release v$PROJECT_VERSION"
+    body: "Automatic release made by Travis CI"
+    prerelease: true
+    on:
+      all_branches: true
+      condition: $RELEASE_PRERELEASE_OSX = YES
