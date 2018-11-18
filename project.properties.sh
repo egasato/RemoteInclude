@@ -11,7 +11,7 @@ __name=$(basename "$__filename" ".sh")
 
 # Check if the Config::Properties module is installed (perl)
 if ! perldoc -l Config::Properties > /dev/null 2>&1; then
-    cpan install Config::Properties
+    PERL_MM_USE_DEFAULT=1 cpan install Config::Properties
 fi
 
 # Read everything using Perl
