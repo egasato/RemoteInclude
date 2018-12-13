@@ -8,7 +8,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.            #
 #######################################################################
 
-pkgname="RemoteInclude"
+pkgname="remoteinclude"
 pkgver="1.0.0.1"
 pkgrel=1
 pkgdesc="Simple CMake script to download and auto-include remote CMake scripts"
@@ -60,4 +60,4 @@ package() {
     cmake --build . --target install
 }
 
-sha512sums="32902b540ce1caf0f8ade3b37353fae8ce4bf4e0faa1937283ffd88946e77f40184f62009c424f0e3ac00e33c821910339bf771669ca1c2ff9cbec53e7d7dadd  RemoteInclude-1.0.0.1.tar.gz"
+sha512sums="f5afa996a2b1e7976c10a6a5e8a7455380c3df3f070e1ca4b164f7f9e38cb1aff2c9c58852ddf7f6dae2b6c4b2f5e97d4af19718d193a1f641bf6e22ffbc866e  RemoteInclude-1.0.0.1.tar.gz"
