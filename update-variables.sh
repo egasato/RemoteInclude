@@ -31,6 +31,41 @@ source scripts/set_summary_CMakeLists.sh
 source scripts/get_version_AppVeyor.sh
 source scripts/set_version_AppVeyor.sh
 
+## Arch Linux functions
+
+source scripts/get_name_PKGBUILD.sh
+source scripts/set_name_PKGBUILD.sh
+
+source scripts/get_version_PKGBUILD.sh
+source scripts/set_version_PKGBUILD.sh
+
+source scripts/get_description_PKGBUILD.sh
+source scripts/set_description_PKGBUILD.sh
+
+source scripts/get_url_PKGBUILD.sh
+source scripts/set_url_PKGBUILD.sh
+
+source scripts/get_source_PKGBUILD.sh
+source scripts/set_source_PKGBUILD.sh
+
+source scripts/get_md5_PKGBUILD.sh
+source scripts/set_md5_PKGBUILD.sh
+
+source scripts/get_sha1_PKGBUILD.sh
+source scripts/set_sha1_PKGBUILD.sh
+
+source scripts/get_sha224_PKGBUILD.sh
+source scripts/set_sha224_PKGBUILD.sh
+
+source scripts/get_sha256_PKGBUILD.sh
+source scripts/set_sha256_PKGBUILD.sh
+
+source scripts/get_sha384_PKGBUILD.sh
+source scripts/set_sha384_PKGBUILD.sh
+
+source scripts/get_sha512_PKGBUILD.sh
+source scripts/set_sha512_PKGBUILD.sh
+
 ## Alpine Linux functions
 
 source scripts/get_name_APKBUILD.sh
@@ -122,13 +157,105 @@ if [[ -f .appveyor.yml ]]; then
     fi
 fi
 
-if [[ -f APKBUILD ]]; then
-    echo -n "* APKBUILD (name):                 "
-    if [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME" ]]; then
+_PROJECT_NAME_LOWER=$(echo "$_PROJECT_NAME" | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')
+
+if [[ -f PKGBUILD ]]; then
+    echo -n "* PKGBUILD (name):                 "
+    if [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME_LOWER" ]]; then
         ok
     else
-        set_name_APKBUILD "$_PROJECT_NAME"
-        [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME" ]] && ok || ko
+        set_name_PKGBUILD "$_PROJECT_NAME_LOWER"
+        [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME_LOWER" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (version):              "
+    if [[ "$(get_version_PKGBUILD)" == "$_PROJECT_VERSION" ]]; then
+        ok
+    else
+        set_version_PKGBUILD "$_PROJECT_VERSION"
+        [[ "$(get_version_PKGBUILD)" == "$_PROJECT_VERSION" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (description):          "
+    if [[ "$(get_description_PKGBUILD)" == "$_PROJECT_DESCRIPTION" ]]; then
+        ok
+    else
+        set_description_PKGBUILD "$_PROJECT_DESCRIPTION"
+        [[ "$(get_description_PKGBUILD)" == "$_PROJECT_DESCRIPTION" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (url):                  "
+    if [[ "$(get_url_PKGBUILD "$_PROJECT_NAME")" == "$_PROJECT_VCS" ]]; then
+        ok
+    else
+        set_url_PKGBUILD "$_PROJECT_VCS" "$_PROJECT_NAME"
+        [[ "$(get_url_PKGBUILD "$_PROJECT_NAME")" == "$_PROJECT_VCS" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (source):               "
+    if [[ "$(get_source_PKGBUILD "$_PROJECT_NAME" "$_PROJECT_VERSION")" == "$_PROJECT_SOURCE" ]]; then
+        ok
+    else
+        set_source_PKGBUILD "$_PROJECT_SOURCE" "$_PROJECT_NAME" "$_PROJECT_VERSION"
+        [[ "$(get_source_PKGBUILD "$_PROJECT_NAME" "$_PROJECT_VERSION")" == "$_PROJECT_SOURCE" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (md5):                  "
+    if [[ "$(get_md5_PKGBUILD)" == "$_PROJECT_MD5" ]]; then
+        ok
+    else
+        set_md5_PKGBUILD "$_PROJECT_MD5"
+        [[ "$(get_md5_PKGBUILD)" == "$_PROJECT_MD5" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (sha1):                 "
+    if [[ "$(get_sha1_PKGBUILD)" == "$_PROJECT_SHA1" ]]; then
+        ok
+    else
+        set_sha1_PKGBUILD "$_PROJECT_SHA1"
+        [[ "$(get_sha1_PKGBUILD)" == "$_PROJECT_SHA1" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (sha224):               "
+    if [[ "$(get_sha224_PKGBUILD)" == "$_PROJECT_SHA224" ]]; then
+        ok
+    else
+        set_sha224_PKGBUILD "$_PROJECT_SHA224"
+        [[ "$(get_sha224_PKGBUILD)" == "$_PROJECT_SHA224" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (sha256):               "
+    if [[ "$(get_sha256_PKGBUILD)" == "$_PROJECT_SHA256" ]]; then
+        ok
+    else
+        set_sha256_PKGBUILD "$_PROJECT_SHA256"
+        [[ "$(get_sha256_PKGBUILD)" == "$_PROJECT_SHA256" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (sha384):               "
+    if [[ "$(get_sha384_PKGBUILD)" == "$_PROJECT_SHA384" ]]; then
+        ok
+    else
+        set_sha384_PKGBUILD "$_PROJECT_SHA384"
+        [[ "$(get_sha384_PKGBUILD)" == "$_PROJECT_SHA384" ]] && ok || ko
+    fi
+
+    echo -n "* PKGBUILD (sha512):               "
+    if [[ "$(get_sha512_PKGBUILD)" == "$_PROJECT_SHA512" ]]; then
+        ok
+    else
+        set_sha512_PKGBUILD "$_PROJECT_SHA512"
+        [[ "$(get_sha512_PKGBUILD)" == "$_PROJECT_SHA512" ]] && ok || ko
+    fi
+fi
+
+if [[ -f APKBUILD ]]; then
+    echo -n "* APKBUILD (name):                 "
+    if [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME_LOWER" ]]; then
+        ok
+    else
+        set_name_APKBUILD "$_PROJECT_NAME_LOWER"
+        [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME_LOWER" ]] && ok || ko
     fi
 
     echo -n "* APKBUILD (version):              "
@@ -172,7 +299,7 @@ if [[ -f APKBUILD ]]; then
     fi
 fi
 
-if [[ -f APKBUILD ]]; then
+if [[ -f .abuild/abuild.conf ]]; then
     echo -n "* abuild.conf (packager):          "
     if [[ "$(get_packager_abuild)" == "$_AUTHOR_CONTACT" ]]; then
         ok
