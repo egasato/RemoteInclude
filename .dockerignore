@@ -8,6 +8,8 @@
 !.abuild/abuild.conf
 !.abuild/*.rsa.pub
 !APKBUILD
+!PKGBUILD
 
 # The source files
 !scripts/entrypoint-apk.sh
+!scripts/entrypoint-xz.sh
