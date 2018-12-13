@@ -51,6 +51,11 @@ unset var
 [[ "$_PROJECT_URL"          == "" ]] && _PROJECT_URL="https://github.com/$_AUTHOR_USER/$_PROJECT_NAME"
 [[ "$_PROJECT_VCS"          == "" ]] && _PROJECT_VCS="$_PROJECT_URL.git"
 [[ "$_PROJECT_SOURCE"       == "" ]] && _PROJECT_SOURCE="https://github.com/$_AUTHOR_USER/$_PROJECT_NAME/releases/download/v$_PROJECT_VERSION/$_PROJECT_NAME.tar.gz"
+[[ "$_PROJECT_MD5"          == "" ]] && _PROJECT_MD5=$(md5sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
+[[ "$_PROJECT_SHA1"         == "" ]] && _PROJECT_SHA1=$(sha1sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
+[[ "$_PROJECT_SHA224"       == "" ]] && _PROJECT_SHA234=$(sha224sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
+[[ "$_PROJECT_SHA256"       == "" ]] && _PROJECT_SHA256=$(sha256sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
+[[ "$_PROJECT_SHA384"       == "" ]] && _PROJECT_SHA384=$(sha384sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
 [[ "$_PROJECT_SHA512"       == "" ]] && _PROJECT_SHA512=$(sha512sum "build/${CMAKE_BUILD_TYPE:-Release}/$_PROJECT_NAME.tar.gz" 2> /dev/null | cut -d' ' -f1)
 [[ "$_LABEL_BUILD_DATE"     == "" ]] && _LABEL_BUILD_DATE="$(date +%FT%T.%NZ)"
 [[ "$_LABEL_NAME"           == "" ]] && _LABEL_NAME="$_PROJECT_NAME"
