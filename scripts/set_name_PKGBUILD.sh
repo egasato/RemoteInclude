@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Returns the project description used inside APKBUILD
-function get_description_APKBUILD() {
+# Sets the project name used inside PKGBUILD
+function set_name_PKGBUILD() {
     local __filename
     if [[ "${BASH_SOURCE[0]}" == "" ]]; then
         __filename=$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")
@@ -9,5 +9,6 @@ function get_description_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_description.gawk" "$__dirname/../APKBUILD"
+    gawk -v project_name="$1" -f "$__dirname/set_name.gawk" "$__dirname/../PKGBUILD" > "$__dirname/../PKGBUILD.tmp"
+    mv "$__dirname/../PKGBUILD.tmp" "$__dirname/../PKGBUILD"
 }

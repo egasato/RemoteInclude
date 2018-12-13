@@ -9,5 +9,5 @@ function get_version_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_version_APKBUILD.gawk" "$__dirname/../APKBUILD"
+    gawk -f "$__dirname/get_version.gawk" "$__dirname/../APKBUILD"
 }

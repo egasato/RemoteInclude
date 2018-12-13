@@ -9,5 +9,5 @@ function get_url_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_url_APKBUILD.gawk" "$__dirname/../APKBUILD" | sed "s/\${pkgname}/$1/"
+    gawk -f "$__dirname/get_url.gawk" "$__dirname/../APKBUILD" | sed "s/\${pkgname}/$1/"
 }

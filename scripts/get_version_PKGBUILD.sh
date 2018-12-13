@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Returns the project description used inside APKBUILD
-function get_description_APKBUILD() {
+# Returns the version number used inside PKGBUILD
+function get_version_PKGBUILD() {
     local __filename
     if [[ "${BASH_SOURCE[0]}" == "" ]]; then
         __filename=$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")
@@ -9,5 +9,5 @@ function get_description_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_description.gawk" "$__dirname/../APKBUILD"
+    gawk -f "$__dirname/get_version.gawk" "$__dirname/../PKGBUILD"
 }

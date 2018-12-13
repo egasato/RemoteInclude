@@ -9,5 +9,5 @@ function get_name_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_name_APKBUILD.gawk" "$__dirname/../APKBUILD"
+    gawk -f "$__dirname/get_name.gawk" "$__dirname/../APKBUILD"
 }

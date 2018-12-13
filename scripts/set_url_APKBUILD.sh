@@ -9,6 +9,6 @@ function set_url_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -v project_url="$1" -v project_name="$2" -f "$__dirname/set_url_APKBUILD.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
+    gawk -v project_url="$1" -v project_name="$2" -f "$__dirname/set_url.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
     mv "$__dirname/../APKBUILD.tmp" "$__dirname/../APKBUILD"
 }
