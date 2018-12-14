@@ -38,6 +38,6 @@ function set_args_apk() {
         -v label_vendor="${24}"      \
         -v label_version="${25}"     \
         \
-        -f "$__dirname/set_args_apk.gawk" "$__dirname/../Dockerfile.apk" > "$__dirname/../Dockerfile.apk.tmp"
+        -f "$__dirname/set_args.gawk" "$__dirname/../Dockerfile.apk" > "$__dirname/../Dockerfile.apk.tmp"
     mv "$__dirname/../Dockerfile.apk.tmp" "$__dirname/../Dockerfile.apk"
 }
