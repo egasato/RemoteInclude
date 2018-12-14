@@ -8,6 +8,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.            #
 #######################################################################
 
+_pkgname="RemoteInclude"
 pkgname="remoteinclude"
 pkgver="1.0.0.1"
 pkgrel=1
@@ -18,8 +19,9 @@ license="MPLv2"
 depends=""
 makedepends="cmake"
 install=""
-source="${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${pkgname}/releases/download/v${pkgver}/${pkgname}.tar.gz"
-builddir="${srcdir}/${pkgname}"
+source="${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${_pkgname}/releases/download/v${pkgver}/${_pkgname}.tar.gz"
+sha512sums="7349486bcdbc4387568775663e9a04d8b07ec4c7fa147ef8abe755a72209632c64d0247e1936048bb244594bd2229dd4dc32ecc8429c84ac3b334b4340e5be5c  ${pkgname}-${pkgver}.tar.gz"
+builddir="${srcdir}/${_pkgname}"
 
 # Unpacks and configures the sources
 prepare() {
@@ -42,8 +44,7 @@ prepare() {
 # Compiles the project
 build() {
     local type=$(echo ${CMAKE_BUILD_TYPE:-Release} | tr '[A-Z]' '[a-z]')
-    [ -d "$builddir/cmake-build-$type" ] || mkdir "$builddir/cmake-build-$type"
-	cd "$builddir/cmake-build-$type"
+    cd "$builddir/cmake-build-$type"
     cmake --build .
 }
 
@@ -55,9 +56,6 @@ check() {
 # Creates the package
 package() {
     local type=$(echo ${CMAKE_BUILD_TYPE:-Release} | tr '[A-Z]' '[a-z]')
-    [ -d "$builddir/cmake-build-$type" ] || mkdir "$builddir/cmake-build-$type"
-	cd "$builddir/cmake-build-$type"
+    cd "$builddir/cmake-build-$type"
     cmake --build . --target install
 }
-
-sha512sums="f5afa996a2b1e7976c10a6a5e8a7455380c3df3f070e1ca4b164f7f9e38cb1aff2c9c58852ddf7f6dae2b6c4b2f5e97d4af19718d193a1f641bf6e22ffbc866e  RemoteInclude-1.0.0.1.tar.gz"
