@@ -9,6 +9,6 @@ function set_name_APKBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -v project_name="$1" -f "$__dirname/set_name.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
+    gawk -v project_name="$1" -v project_name_lower="$(echo "$1" | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')" -f "$__dirname/set_name.gawk" "$__dirname/../APKBUILD" > "$__dirname/../APKBUILD.tmp"
     mv "$__dirname/../APKBUILD.tmp" "$__dirname/../APKBUILD"
 }
