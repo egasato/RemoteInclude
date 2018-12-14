@@ -9,5 +9,5 @@ function get_source_PKGBUILD() {
         __filename=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/$(basename "${BASH_SOURCE[0]}")
     fi
     local __dirname=$(dirname "$__filename")
-    gawk -f "$__dirname/get_source_PKGBUILD.gawk" "$__dirname/../PKGBUILD" | sed "s/\${pkgname}/$1/g" | sed "s/\${pkgver}/$2/g"
+    gawk -f "$__dirname/get_source_PKGBUILD.gawk" "$__dirname/../PKGBUILD" | sed "s/\${_pkgname}/$1/g" | sed "s/\${pkgver}/$2/g"
 }
