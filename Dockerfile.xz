@@ -1,0 +1,128 @@
+#######################################################################
+# Copyright (c) 2018 Esaú García Sánchez-Torija                       #
+#                                                                     #
+# This Source Code Form is subject to the terms of the Mozilla Public #
+# License, v. 2.0. If a copy of the MPL was not distributed with this #
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.            #
+#######################################################################
+
+# Use Alpine Linux as base image (apk-based and lightweight)
+FROM base/archlinux:2018.12.01
+
+## List all the arguments (basically the project.properties)
+
+ARG AUTHOR_USER="egasato"
+ARG AUTHOR_NAME="Esaú García Sánchez-Torija"
+ARG AUTHOR_NAME_ASCII="Esau Garcia Sanchez-Torija"
+ARG AUTHOR_EMAIL="egasato@protonmail.com"
+ARG PROJECT_NAME="RemoteInclude"
+ARG PROJECT_DESCRIPTION="Simple CMake script to download and auto-include remote CMake scripts"
+ARG PROJECT_VERSION="1.0.0.1"
+ARG PROJECT_SHA512="7349486bcdbc4387568775663e9a04d8b07ec4c7fa147ef8abe755a72209632c64d0247e1936048bb244594bd2229dd4dc32ecc8429c84ac3b334b4340e5be5c"
+
+ENV AUTHOR_USER         ${AUTHOR_USER}
+ENV AUTHOR_NAME         ${AUTHOR_NAME}
+ENV AUTHOR_NAME_ASCII   ${AUTHOR_NAME_ASCII}
+ENV AUTHOR_EMAIL        ${AUTHOR_EMAIL}
+ENV PROJECT_NAME        ${PROJECT_NAME}
+ENV PROJECT_DESCRIPTION ${PROJECT_DESCRIPTION}
+ENV PROJECT_VERSION     ${PROJECT_VERSION}
+ENV PROJECT_SHA512      ${PROJECT_SHA512}
+
+ARG AUTHOR_CONTACT="Esaú García Sánchez-Torija <egasato@protonmail.com>"
+ARG AUTHOR_CONTACT_ASCII="Esau Garcia Sanchez-Torija <egasato@protonmail.com>"
+ARG PROJECT_VENDOR="Esaú García Sánchez-Torija (Open Source Developer)"
+ARG PROJECT_VENDOR_ASCII="Esau Garcia Sanchez-Torija (Open Source Developer)"
+ARG PROJECT_HOMEPAGE="https://egasato.github.io/RemoteInclude"
+ARG PROJECT_URL="https://github.com/egasato/RemoteInclude"
+ARG PROJECT_VCS="https://github.com/egasato/RemoteInclude.git"
+ARG PROJECT_SOURCE="https://github.com/egasato/RemoteInclude/releases/download/v1.0.0.1/RemoteInclude.tar.gz"
+ARG CMAKE_BUILD_TYPE="Release"
+
+ENV AUTHOR_CONTACT       ${AUTHOR_CONTACT}
+ENV AUTHOR_CONTACT_ASCII ${AUTHOR_CONTACT_ASCII}
+ENV PROJECT_VENDOR       ${PROJECT_VENDOR}
+ENV PROJECT_VENDOR_ASCII ${PROJECT_VENDOR_ASCII}
+ENV PROJECT_HOMEPAGE     ${PROJECT_HOMEPAGE}
+ENV PROJECT_URL          ${PROJECT_URL}
+ENV PROJECT_SOURCE       ${PROJECT_SOURCE}
+ENV CMAKE_BUILD_TYPE     ${CMAKE_BUILD_TYPE}
+
+ARG LABEL_BUILD_DATE="2018-12-14T14:48:04.533948300Z"
+ARG LABEL_NAME="RemoteInclude"
+ARG LABEL_DESCRIPTION="Simple CMake script to download and auto-include remote CMake scripts"
+ARG LABEL_USAGE="https://github.com/egasato/RemoteInclude/blob/a13821c2eb168202b51d4020ce8024f668935954/README.md"
+ARG LABEL_URL="https://egasato.github.io/RemoteInclude"
+ARG LABEL_VCS_URL="https://github.com/egasato/RemoteInclude.git"
+ARG LABEL_VCS_REF="a13821c2eb168202b51d4020ce8024f668935954"
+ARG LABEL_VENDOR="Esaú García Sánchez-Torija (Open Source Developer)"
+ARG LABEL_VERSION="v1.0.0.1"
+
+ENV LABEL_BUILD_DATE  ${LABEL_BUILD_DATE}
+ENV LABEL_NAME        ${LABEL_NAME}
+ENV LABEL_DESCRIPTION ${LABEL_DESCRIPTION}
+ENV LABEL_USAGE       ${LABEL_USAGE}
+ENV LABEL_URL         ${LABEL_URL}
+ENV LABEL_VCS_URL     ${LABEL_VCS_URL}
+ENV LABEL_VCS_REF     ${LABEL_VCS_REF}
+ENV LABEL_VENDOR      ${LABEL_VENDOR}
+ENV LABEL_VERSION     ${LABEL_VERSION}
+
+# Set some metadata labels
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.build-date     = "$LABEL_BUILD_DATE"
+LABEL org.label-schema.name           = "$LABEL_NAME"
+LABEL org.label-schema.description    = "$LABEL_DESCRIPTION"
+LABEL org.label-schema.usage          = "$LABEL_USAGE"
+LABEL org.label-schema.url            = "$LABEL_URL"
+LABEL org.label-schema.vcs-url        = "$LABEL_VCS_URL"
+LABEL org.label-schema.vcs-ref        = "$LABEL_VCS_REF"
+LABEL org.label-schema.vendor         = "$LABEL_VENDOR"
+LABEL org.label-schema.version        = "$LABEL_VERSION"
+
+## Prepare all the dependencies
+
+# Install the dependencies to build the project
+RUN pacman -Sy --noconfirm fakeroot namcap git dos2unix make gcc cmake
+
+# Get the UID and GID of the host
+ARG UID=1000
+ARG GID=1000
+
+ENV UID ${UID}
+ENV GID ${UID}
+
+## Prepare the environment
+
+# Configure git
+RUN    git config --global user.name  "$AUTHOR_NAME" \
+    && git config --global user.email "$AUTHOR_EMAIL"
+
+# Create a non-root user and set the home directory
+RUN useradd -r -m -d "/home/$AUTHOR_USER" -u "$UID" "$AUTHOR_USER"
+
+# Set the home directory
+ENV HOME "/home/$AUTHOR_USER"
+
+# Copy the source code
+COPY . "/usr/src/$AUTHOR_USER/$PROJECT_NAME"
+
+# Link the source code, the entrypoint, the building configuration, the keys and the source tarball
+RUN    ln -s -f "/usr/src/$AUTHOR_USER/$PROJECT_NAME"          "$HOME/$PROJECT_NAME"  \
+    && ln -s -f "$HOME/$PROJECT_NAME/scripts/entrypoint-xz.sh" /usr/bin/entrypoint.sh \
+    && ln -s -f "$HOME/$PROJECT_NAME/build/$CMAKE_BUILD_TYPE/$PROJECT_NAME.tar.gz" "$HOME/$PROJECT_NAME/$(echo "$PROJECT_NAME" | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')-$PROJECT_VERSION.tar.gz"
+
+# Fix the permissions, ownership and line endings
+RUN    chown -R "$AUTHOR_USER":"$AUTHOR_USER" "/usr/src/$AUTHOR_USER" \
+    && chown -R "$AUTHOR_USER":"$AUTHOR_USER" "$HOME"
+
+# Update everything and change the user
+RUN pacman -Sy
+USER "$AUTHOR_USER"
+
+# Set the working directory to the repository root path
+WORKDIR "$HOME/$PROJECT_NAME"
+
+# Set the entrypoint
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD [""]
