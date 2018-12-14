@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
 
 # Change directory to prevent polluting the source code
+_proj=$(echo $PROJECT_NAME | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')
 _prev="$(pwd)"
-_next="/usr/src/aports/community/$(echo $PROJECT_NAME | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')"
+_next="/usr/src/aports/community/$_proj"
 echo "Changing to build directory: $_next"
 [ -d "$_next" ] || mkdir -p "$_next"
 cd "$_next"
@@ -16,13 +17,6 @@ echo "==========================================================================
 echo "==================================== FETCH ====================================="
 echo "================================================================================"
 abuild -c -K fetch
-echo
-
-# Update the checksum
-echo "================================================================================"
-echo "=================================== CHECKSUM ==================================="
-echo "================================================================================"
-abuild -c -K checksum
 echo
 
 # Create the source package
@@ -55,17 +49,19 @@ echo
 
 # Copying created packages
 echo "Copying artifacts"
-_src="$(ls -1 "$HOME/packages/src"                    | grep -E "$PROJECT_NAME-$PROJECT_VERSION-\\d+\\.src\\.tar\\.gz")"
-_bin="$(ls -1 "$HOME/packages/community/$(abuild -A)" | grep -E "$PROJECT_NAME-$PROJECT_VERSION-r\\d+\\.apk")"
+_src="$(ls -1 "$HOME/packages/src"                    | grep -E "^$_proj-$PROJECT_VERSION-\\d+\\.src\\.tar\\.gz\$")"
+_bin="$(ls -1 "$HOME/packages/community/$(abuild -A)" | grep -E "^$_proj-$PROJECT_VERSION-r\\d+\\.apk\$")"
 cp "$HOME/packages/src/$_src"                    "$_prev/build/${CMAKE_BUILD_TYPE:-Release}"
 cp "$HOME/packages/community/$(abuild -A)/$_bin" "$_prev/build/${CMAKE_BUILD_TYPE:-Release}"
 
 # Change directory to prevent polluting the source code
 echo "Changing to previous directory: $_prev"
 cd "$_prev"
+unset _bin
 unset _src
 unset _next
 unset _prev
+unset _proj
 
 # Execute whatever the arguments are
 if [[ $# -ge 0 ]] && [[ "$@" != "" ]]; then
