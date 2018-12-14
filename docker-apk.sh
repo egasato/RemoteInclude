@@ -14,6 +14,9 @@ source ./project.properties.sh
 # Create all the directories that are mounted inside the container
 mkdir -p .abuild scripts build/{Debug,Release,RelWithDebInfo,MinSizeRel}/apk/{src/$_PROJECT_NAME,build,pkg/$_PROJECT_NAME} 2> /dev/null
 
+# Fix all the line endings of the scripts
+dos2unix *.sh scripts/*.sh scripts/*.gawk APKBUILD
+
 # Create the Docker image
 if [[ -z ${TESTING+x} ]]; then
     docker build                                                \
