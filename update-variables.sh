@@ -31,6 +31,14 @@ source scripts/set_summary_CMakeLists.sh
 source scripts/get_version_AppVeyor.sh
 source scripts/set_version_AppVeyor.sh
 
+## Fedora functions
+
+source scripts/get_name_RPM.sh
+source scripts/set_name_RPM.sh
+
+source scripts/get_version_RPM.sh
+source scripts/set_version_RPM.sh
+
 ## Arch Linux functions
 
 source scripts/get_name_PKGBUILD.sh
@@ -65,6 +73,9 @@ source scripts/set_sha384_PKGBUILD.sh
 
 source scripts/get_sha512_PKGBUILD.sh
 source scripts/set_sha512_PKGBUILD.sh
+
+source scripts/set_args_xz.sh
+#source scripts/set_launcher_apk.sh
 
 ## Alpine Linux functions
 
@@ -157,15 +168,13 @@ if [[ -f .appveyor.yml ]]; then
     fi
 fi
 
-_PROJECT_NAME_LOWER=$(echo "$_PROJECT_NAME" | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')
-
 if [[ -f PKGBUILD ]]; then
     echo -n "* PKGBUILD (name):                 "
-    if [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME_LOWER" ]]; then
+    if [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME" ]]; then
         ok
     else
-        set_name_PKGBUILD "$_PROJECT_NAME_LOWER"
-        [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME_LOWER" ]] && ok || ko
+        set_name_PKGBUILD "$_PROJECT_NAME"
+        [[ "$(get_name_PKGBUILD)" == "$_PROJECT_NAME" ]] && ok || ko
     fi
 
     echo -n "* PKGBUILD (version):              "
@@ -249,13 +258,22 @@ if [[ -f PKGBUILD ]]; then
     fi
 fi
 
+if [[ -f Dockerfile.xz ]]; then
+    echo -n "* Dockerfile.xz (args):            "
+    set_args_xz \
+        "$_AUTHOR_USER"      "$_AUTHOR_NAME"         "$_AUTHOR_NAME_ASCII" "$_AUTHOR_EMAIL"   "$_AUTHOR_CONTACT" "$_AUTHOR_CONTACT_ASCII"                                                                                  \
+        "$_PROJECT_NAME"     "$_PROJECT_DESCRIPTION" "$_PROJECT_VERSION"   "$_PROJECT_SHA512" "$_PROJECT_VENDOR" "$_PROJECT_VENDOR_ASCII" "$_PROJECT_HOMEPAGE" "$_PROJECT_URL"  "$_PROJECT_VCS"   "$_PROJECT_SOURCE" \
+        "$_LABEL_BUILD_DATE" "$_LABEL_NAME"          "$_LABEL_DESCRIPTION" "$_LABEL_USAGE"    "$_LABEL_URL"      "$_LABEL_VCS_URL"        "$_LABEL_VCS_REF"    "$_LABEL_VENDOR" "$_LABEL_VERSION"
+    ok
+fi
+
 if [[ -f APKBUILD ]]; then
     echo -n "* APKBUILD (name):                 "
-    if [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME_LOWER" ]]; then
+    if [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME" ]]; then
         ok
     else
-        set_name_APKBUILD "$_PROJECT_NAME_LOWER"
-        [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME_LOWER" ]] && ok || ko
+        set_name_APKBUILD "$_PROJECT_NAME"
+        [[ "$(get_name_APKBUILD)" == "$_PROJECT_NAME" ]] && ok || ko
     fi
 
     echo -n "* APKBUILD (version):              "
