@@ -11,12 +11,14 @@ cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 
 # Configure the project
 # @formatter:off
-project(RemoteInclude
-        VERSION   1.0.0.1
+set(PROJECT_NAME          RemoteInclude)
+set(PROJECT_VERSION       1.0.0.1)
+set(PROJECT_DESCRIPTION  "Remote CMake script downloader (and includer)")
+set(PROJECT_HOMEPAGE_URL  https://egasato.github.io/RemoteInclude)
+project(${PROJECT_NAME}
+        VERSION   ${PROJECT_VERSION}
         LANGUAGES C
 )
-set(PROJECT_DESCRIPTION  "Simple CMake script to download and auto-include remote CMake scripts")
-set(PROJECT_HOMEPAGE_URL  https://github.com/egasato/RemoteInclude)
 # @formatter:on
 
 #######################################################################
@@ -129,12 +131,13 @@ export(PACKAGE RemoteInclude)
 ########################### INSTALLER RULES ###########################
 #######################################################################
 
+set(CPACK_GENERATOR "TBZ2;TGZ;TZ;ZIP;STGZ")
+
 # @formatter:off
-set(CPACK_GENERATOR                   "TBZ2;TGZ;TZ;ZIP;STGZ")
 set(CPACK_PACKAGE_NAME                "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR              "Esau Garcia Sanchez-Torija (Open Source Developer)")
 set(CPACK_PACKAGE_CONTACT             "Esaú García Sánchez-Torija <egasato@protonmail.com>")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Simple CMake script to download and auto-include remote CMake scripts")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Remote CMake script downloader (and includer)")
 set(CPACK_PACKAGE_VERSION              ${PROJECT_VERSION})
 set(CPACK_PACKAGE_VERSION_MAJOR        ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR        ${PROJECT_VERSION_MINOR})
