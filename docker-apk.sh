@@ -17,6 +17,9 @@ mkdir -p .abuild scripts build/{Debug,Release,RelWithDebInfo,MinSizeRel}/apk/{sr
 # Fix all the line endings of the scripts
 dos2unix *.sh scripts/*.sh scripts/*.gawk APKBUILD
 
+# Compute the name of the image
+__img=$(echo -n "$_PROJECT_NAME" | tr 'A-Z' 'a-z' | tr -s ' ' | tr ' ' '-')
+
 # Create the Docker image
 if [[ -z ${TESTING+x} ]]; then
     docker build                                                \
@@ -50,11 +53,11 @@ if [[ -z ${TESTING+x} ]]; then
         --build-arg UID=$(id -u) \
         --build-arg GID=$(id -g) \
         \
-        -t remoteinclude-apk \
-        -f Dockerfile.apk    \
+        -t "$__img-apk"   \
+        -f Dockerfile.apk \
         .
 else
-    docker build -t remoteinclude-apk -f Dockerfile.apk .
+    docker build -t "$__img-apk" -f Dockerfile.apk .
 fi
 
 # Run the container
@@ -69,7 +72,7 @@ if [[ "$OSTYPE" == "cygwin" ]]; then
         --mount type=bind,src="$(cygpath -w "$(pwd)/build/Release")",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/build/Release"               \
         --mount type=bind,src="$(cygpath -w "$(pwd)/build/RelWithDebInfo")",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/build/RelWithDebInfo" \
         --mount type=bind,src="$(cygpath -w "$(pwd)/build/MinSizeRel")",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/build/MinSizeRel"         \
-        remoteinclude-apk $@
+        "$__img-apk" "$@"
 else
     docker run                                                                                                      \
         --rm                                                                                                        \
@@ -80,5 +83,5 @@ else
         --mount type=bind,src="$(pwd)/build/Release",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/Release"               \
         --mount type=bind,src="$(pwd)/build/RelWithDebInfo",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/RelWithDebInfo" \
         --mount type=bind,src="$(pwd)/build/MinSizeRel",dst="/home/$_AUTHOR_USER/$_PROJECT_NAME/MinSizeRel"         \
-        remoteinclude-apk $@
+        "$__img-apk" "$@"
 fi
