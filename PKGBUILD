@@ -10,15 +10,18 @@
 
 _pkgname="RemoteInclude"
 pkgname="remoteinclude"
+
 pkgver="1.0.0.1"
 pkgrel=1
-pkgdesc="Simple CMake script to download and auto-include remote CMake scripts"
+epoch=0
+
 arch=("any")
-url="https://github.com/egasato/${pkgname}.git"
 license=("MPL2")
+pkgdesc="Remote CMake script downloader (and includer)"
 groups=()
+
 depends=()
-makedepends=("cmake")
+makedepends=()
 optdepends=()
 checkdepends=("cmake")
 provides=()
@@ -28,6 +31,8 @@ backup=()
 options=()
 install=""
 changelog=""
+
+url="https://egasato.github.io/${_pkgname}"
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/egasato/${_pkgname}/releases/download/v${pkgver}/${_pkgname}.tar.gz")
 noextract=()
 md5sums=("dfa855e3deb8b886a38cc588462fe5cb")
