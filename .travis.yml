@@ -36,14 +36,14 @@ addons:
       - gawk
       - cmake
 
-services:
-  - docker
-
 # Install the dependencies (or output some information about them)
 install:
   - cmake --version
   - cpack --version
-  - docker --version
+  - |
+    if [ command -v docker ]; then
+      docker --version
+    fi
 
 # Configure the project
 before_script:
